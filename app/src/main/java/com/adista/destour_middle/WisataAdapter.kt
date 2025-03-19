@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class WisataAdapter(private val wisataData: WisataData) : RecyclerView.Adapter<WisataAdapter.WisataViewHolder>() {
+class WisataAdapter(private var wisataData: List<WisataItem>) :
+    RecyclerView.Adapter<WisataAdapter.WisataViewHolder>() {
 
-    // ViewHolder untuk setiap item wisata
     class WisataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageViewWisata)
         val title: TextView = itemView.findViewById(R.id.textViewNamaWisata)
@@ -18,29 +18,36 @@ class WisataAdapter(private val wisataData: WisataData) : RecyclerView.Adapter<W
         val deskripsi: TextView = itemView.findViewById(R.id.textViewDeskripsi)
     }
 
-    // Mengikat data ke tampilan item wisata
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WisataViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_wisata, parent, false)
         return WisataViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: WisataViewHolder, position: Int) {
-        // Mengakses wisataList di dalam WisataData
-        val wisataItem = wisataData.wisataList[position]  // Memperbaiki akses data
-
-        // Mengikat data gambar, judul, lokasi, dan deskripsi
+        val wisataItem = wisataData[position]
         holder.title.text = wisataItem.title
         holder.lokasi.text = wisataItem.lokasi
         holder.deskripsi.text = wisataItem.deskripsi
 
-        // Menggunakan Glide untuk menampilkan gambar dari URL
+        // 🔹 Ambil ID gambar dari Google Drive URL
+        val imageUrl = wisataItem.imageUrl
+        val imageId = imageUrl.split("/")[5] // Mengambil bagian ke-5 dari URL
+
+        // 🔹 Buat URL tampilan langsung dari Google Drive
+        val directImageUrl = "https://drive.google.com/uc?export=view&id=$imageId"
+
+        // 🔹 Tampilkan gambar menggunakan Glide
         Glide.with(holder.itemView.context)
-            .load(wisataItem.imageUrl)
+            .load(directImageUrl)
             .into(holder.imageView)
     }
 
     override fun getItemCount(): Int {
-        return wisataData.wisataList.size  // Mengembalikan ukuran daftar wisata
+        return wisataData.size
+    }
+
+    fun updateData(newData: List<WisataItem>) {
+        wisataData = newData
+        notifyDataSetChanged()
     }
 }
-

@@ -24,4 +24,11 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 10
     ): Call<WisataResponse>
+
+    @GET("exec")
+    fun searchWisata(
+        @Query("endpoint") endpoint: String = "searchwisata",
+        @Query("token") token: String,
+        @Query("keyword") keyword: String
+    ): Call<WisataResponse>
 }
