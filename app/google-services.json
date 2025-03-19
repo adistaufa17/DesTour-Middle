@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "543827799159",
+    "project_id": "destour-85afb",
+    "storage_bucket": "destour-85afb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543827799159:android:19241e2db5c82db24e2a72",
+        "android_client_info": {
+          "package_name": "com.adista.destour_middle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANHcMpImW2ynhslyMMTJutynbAuRk4LNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
