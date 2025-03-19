@@ -12,13 +12,13 @@ class WisataViewModel : ViewModel() {
     private val _wisataResponse = MutableLiveData<List<WisataItem>>()
     val wisataResponse: LiveData<List<WisataItem>> = _wisataResponse
 
-    private var allWisataList: List<WisataItem> = emptyList() // ✅ Simpan semua data wisata
+    private var allWisataList: List<WisataItem> = emptyList()
 
     fun getWisata(token: String) {
         RetrofitClient.instance.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
             override fun onResponse(call: Call<WisataResponse>, response: Response<WisataResponse>) {
                 if (response.isSuccessful) {
-                    allWisataList = response.body()?.data?.wisataList ?: emptyList() // ✅ Simpan semua data wisata
+                    allWisataList = response.body()?.data?.wisataList ?: emptyList()
                     _wisataResponse.value = allWisataList
                 } else {
                     Log.e("Wisata", "Error: ${response.errorBody()?.string()}")
@@ -31,7 +31,6 @@ class WisataViewModel : ViewModel() {
         })
     }
 
-    // 🔹 Lakukan pencarian di dalam Android jika backend tidak mendukung substring search
     fun searchWisataOffline(query: String) {
         val filteredList = allWisataList.filter { it.title.contains(query, ignoreCase = true) }
         _wisataResponse.value = filteredList

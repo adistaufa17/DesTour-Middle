@@ -11,7 +11,7 @@ import com.adista.destour_middle.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WisataViewModel by viewModels()
-    private lateinit var adapter: WisataAdapter // ✅ Buat adapter sebagai variabel global
+    private lateinit var adapter: WisataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         val token = "c5d98b11-546f-4f03-b92a-aa4a1deb5c89"
 
-        // ✅ Inisialisasi adapter dengan list kosong
         adapter = WisataAdapter(emptyList())
         binding.recyclerViewWisata.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewWisata.adapter = adapter
@@ -32,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Ambil semua wisata saat pertama kali masuk
         viewModel.getWisata(token)
 
         // Menangani pencarian
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
             if (query.isNotEmpty()) {
                 Log.d("SearchWisata", "Melakukan pencarian lokal untuk: $query")
-                viewModel.searchWisataOffline(query) // ✅ Gunakan filter lokal
+                viewModel.searchWisataOffline(query)
             } else {
                 Toast.makeText(this, "Masukkan kata kunci pencarian!", Toast.LENGTH_SHORT).show()
             }
