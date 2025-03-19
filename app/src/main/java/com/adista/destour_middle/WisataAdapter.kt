@@ -29,6 +29,7 @@ class WisataAdapter(private var wisataData: List<WisataItem>) :
         holder.lokasi.text = wisataItem.lokasi
         holder.deskripsi.text = wisataItem.deskripsi
 
+
         val imageUrl = wisataItem.imageUrl
         val imageId = imageUrl.split("/")[5] // Mengambil bagian ke-5 dari URL
 
