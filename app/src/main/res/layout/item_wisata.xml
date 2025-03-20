@@ -38,4 +38,6 @@
         android:layout_height="wrap_content"
         android:text="Deskripsi"
         android:textSize="14sp" />
+
+
 </LinearLayout>

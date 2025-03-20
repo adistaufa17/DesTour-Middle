@@ -37,6 +37,15 @@
             android:padding="8dp"/>
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <!-- RecyclerView untuk daftar wisata -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewWisata"

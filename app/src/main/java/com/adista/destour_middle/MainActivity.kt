@@ -1,5 +1,6 @@
 package com.adista.destour_middle
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Masukkan kata kunci pencarian!", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnProfile.setOnClickListener{
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
     }

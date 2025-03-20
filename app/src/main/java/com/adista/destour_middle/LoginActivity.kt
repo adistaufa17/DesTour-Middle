@@ -1,5 +1,6 @@
 package com.adista.destour_middle
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -38,6 +39,12 @@ class LoginActivity : AppCompatActivity() {
             response?.let {
                 if (it.status == "success") {
                     Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
+
+                    val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("user_token", it.data?.token)
+                    editor.apply()
+
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {

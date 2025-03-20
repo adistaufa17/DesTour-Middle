@@ -1,5 +1,6 @@
 package com.adista.destour_middle
 
+import com.crocodic.core.api.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -31,4 +32,11 @@ interface ApiService {
         @Query("token") token: String,
         @Query("keyword") keyword: String
     ): Call<WisataResponse>
+
+    @GET("exec")
+    fun getProfile(
+        @Query("endpoint") endpoint: String = "profile",
+        @Query("token") token: String
+    ): Call<ProfileResponse>
+
 }
