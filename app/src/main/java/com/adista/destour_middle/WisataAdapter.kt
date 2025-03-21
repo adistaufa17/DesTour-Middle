@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 class WisataAdapter(
     private var wisataData: List<WisataItem>,
     private val context: Context,
-    private val onBookmarkClick: (WisataItem, Boolean) -> Unit
+    private val onBookmarkClick: (WisataItem) -> Unit
 ) : RecyclerView.Adapter<WisataAdapter.WisataViewHolder>() {
 
     class WisataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,7 +33,7 @@ class WisataAdapter(
         val wisataItem = wisataData[position]
         val sharedPreferences = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE)
 
-        var isBookmarked = sharedPreferences.getBoolean("BOOKMARK_${wisataItem.id}", false)
+        val isBookmarked = sharedPreferences.getBoolean("BOOKMARK_${wisataItem.id}", false)
 
         holder.title.text = wisataItem.title
         holder.lokasi.text = wisataItem.lokasi
@@ -47,26 +47,39 @@ class WisataAdapter(
             .load(directImageUrl)
             .into(holder.imageView)
 
-        // Perbarui tampilan bookmark
-        holder.bookmarkButton.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
+        // Jika sudah di-bookmark, tampilkan ikon bookmark, jika belum, sembunyikan
+        if (isBookmarked) {
+            holder.bookmarkButton.visibility = View.VISIBLE
+            holder.bookmarkButton.setImageResource(R.drawable.ic_bookmarked)
+        } else {
+            holder.bookmarkButton.visibility = View.GONE
+        }
 
-        // Handle klik bookmark
+        // Tombol bookmark tetap ada, tapi disembunyikan jika belum di-bookmark
         holder.bookmarkButton.setOnClickListener {
-            isBookmarked = !isBookmarked
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("BOOKMARK_${wisataItem.id}", isBookmarked)
-            editor.apply()
+            onBookmarkClick(wisataItem)
+            notifyItemChanged(position)
+        }
 
-            // 🔴 Panggil API yang sesuai
-            onBookmarkClick(wisataItem, isBookmarked)
-
-            // Perbarui ikon
-            holder.bookmarkButton.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailWisataActivity::class.java).apply {
+                putExtra("WISATA_ID", wisataItem.id)
+                putExtra("WISATA_TITLE", wisataItem.title)
+                putExtra("WISATA_LOKASI", wisataItem.lokasi)
+                putExtra("WISATA_DESKRIPSI", wisataItem.deskripsi)
+                putExtra("WISATA_IMAGE", directImageUrl)
+            }
+            (holder.itemView.context as MainActivity).resultLauncher.launch(intent)
         }
     }
 
     override fun getItemCount(): Int {
         return wisataData.size
+    }
+
+    fun updateData(newData: List<WisataItem>) {
+        wisataData = newData
+        notifyDataSetChanged()
     }
 
     fun updateBookmarkStatus(wisataId: Int, isBookmarked: Boolean) {
@@ -76,11 +89,5 @@ class WisataAdapter(
                 break
             }
         }
-    }
-
-
-    fun updateData(newData: List<WisataItem>) {
-        wisataData = newData
-        notifyDataSetChanged()
     }
 }

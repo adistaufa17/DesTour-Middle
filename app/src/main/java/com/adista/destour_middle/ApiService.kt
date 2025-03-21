@@ -1,6 +1,5 @@
 package com.adista.destour_middle
 
-import com.crocodic.core.api.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,13 +16,10 @@ interface ApiService {
     @POST("exec")
     fun login(@Body loginRequest: LoginRequest): Call<AuthResponse>
 
-    @Headers("Content-Type: application/json")
     @GET("exec")
     fun getListWisata(
-        @Query("endpoint") endpoint: String = "listwisata",
         @Query("token") token: String,
-        @Query("page") page: Int = 1,
-        @Query("limit") limit: Int = 10
+        @Query("endpoint") endpoint: String = "listwisata"
     ): Call<WisataResponse>
 
     @GET("exec")
@@ -44,7 +40,7 @@ interface ApiService {
         @Query("endpoint") endpoint: String = "addBookmarks",
         @Query("token") token: String,
         @Query("id_wisata") idWisata: Int
-    ): Call<com.adista.destour_middle.ApiResponse>
+    ): Call<ApiResponse>
 
     @POST("exec")
     fun removeBookmark(
@@ -53,5 +49,11 @@ interface ApiService {
         @Query("id_wisata") idWisata: Int
     ): Call<ApiResponse>
 
-
+    @GET("exec")
+    fun getBookmarks(
+        @Query("endpoint") endpoint: String = "getBookmarks",
+        @Query("token") token: String,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 10
+    ): Call<WisataResponse>
 }

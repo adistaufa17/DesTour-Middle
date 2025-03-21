@@ -18,9 +18,10 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
         val token = sharedPreferences.getString("user_token", null)
 
-        if (token != null) {
+        if (isLoggedIn && !token.isNullOrEmpty()) {
             viewModel.getProfile(token)
         } else {
             Toast.makeText(this, "Token tidak ditemukan, silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
@@ -39,14 +40,13 @@ class ProfileActivity : AppCompatActivity() {
                 }
             } else if (response?.code == 401) {
                 Toast.makeText(this, "Token tidak valid. Silakan login lagi.", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                logoutUser()
             } else {
                 Toast.makeText(this, "Gagal memuat profil: ${response?.message}", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // **Tambahkan aksi untuk tombol logout**
+        // Tambahkan aksi untuk tombol logout
         binding.buttonLogout.setOnClickListener {
             logoutUser()
         }
@@ -56,7 +56,7 @@ class ProfileActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear() // Hapus semua data login
-        editor.apply()
+        editor.commit() // Gunakan commit() untuk memastikan data dihapus segera
 
         Toast.makeText(this, "Anda telah logout", Toast.LENGTH_SHORT).show()
 
