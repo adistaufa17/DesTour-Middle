@@ -39,4 +39,11 @@ interface ApiService {
         @Query("token") token: String
     ): Call<ProfileResponse>
 
+    @POST("exec")
+    fun addBookmark(
+        @Query("endpoint") endpoint: String = "addBookmarks",
+        @Query("token") token: String,
+        @Query("id_wisata") idWisata: Int
+    ): Call<com.adista.destour_middle.ApiResponse>
+
 }

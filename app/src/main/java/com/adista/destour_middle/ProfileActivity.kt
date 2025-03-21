@@ -1,3 +1,4 @@
+
 package com.adista.destour_middle
 
 import android.content.Context
@@ -24,7 +25,6 @@ class ProfileActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("user_token", null)
 
         if(token != null) {
-            // Ambil data profil menggunakan token
             viewModel.getProfile(token)
         } else {
             Toast.makeText(this, "Token tidak ditemukan, silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
@@ -32,27 +32,25 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         }
 
-        // Observasi perubahan data profil
         viewModel.profileResponse.observe(this) { response ->
             if (response?.status == "success") {
-                // Memastikan bahwa data profil tidak null
                 response.data?.let { profile ->
-                    // Menampilkan data profil di UI
                     binding.textViewNama.text = profile.namaLengkap
                     binding.textViewEmail.text = profile.email
                     binding.textViewNomorHp.text = profile.nomorHp
                 } ?: run {
-                    // Jika data profil null, tampilkan pesan error
+
                     Toast.makeText(this, "Data profil tidak tersedia", Toast.LENGTH_SHORT).show()
                 }
             } else if (response?.code == 401) {
-                // Token tidak valid, arahkan pengguna untuk login lagi
                 Toast.makeText(this, "Token tidak valid. Silakan login lagi.", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java)) // Arahkan pengguna ke login
-                finish() // Selesai aktivitas ini
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             } else {
                 Toast.makeText(this, "Gagal memuat profil: ${response?.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 }
+
+

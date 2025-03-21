@@ -19,5 +19,7 @@ data class WisataItem(
     @SerializedName("image_url") val imageUrl: String,
     @SerializedName("title") val title: String,
     @SerializedName("lokasi") val lokasi: String,
-    @SerializedName("deskripsi") val deskripsi: String
+    @SerializedName("deskripsi") val deskripsi: String,
+    @SerializedName("is_bookmarked") val isBookmarked: Boolean = false
+
 )
