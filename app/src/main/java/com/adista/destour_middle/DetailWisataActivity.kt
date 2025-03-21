@@ -9,8 +9,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.adista.destour_middle.databinding.ActivityDetailWisataBinding
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class DetailWisataActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailWisataBinding
     private lateinit var sharedPreferences: SharedPreferences

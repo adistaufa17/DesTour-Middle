@@ -1,17 +1,19 @@
 package com.adista.destour_middle
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.auth.User
-import dagger.hilt.android.internal.Contexts.getApplication
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
     private val _loginResponse = MutableLiveData<AuthResponse>()
     val loginResponse: LiveData<AuthResponse> = _loginResponse
 
@@ -21,7 +23,7 @@ class LoginViewModel : ViewModel() {
             password = password
         )
 
-        RetrofitClient.instance.login(request).enqueue(object : Callback<AuthResponse> {
+        apiService.login(request).enqueue(object : Callback<AuthResponse> {
             override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
                 if (response.isSuccessful) {
                     _loginResponse.value = response.body()

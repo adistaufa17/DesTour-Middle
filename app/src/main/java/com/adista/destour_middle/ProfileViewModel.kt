@@ -4,16 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
     private val _profileResponse = MutableLiveData<ProfileResponse>()
     val profileResponse: LiveData<ProfileResponse> = _profileResponse
 
     fun getProfile(token: String) {
-        RetrofitClient.instance.getProfile(token = token).enqueue(object :
+        apiService.getProfile(token = token).enqueue(object :
             Callback<ProfileResponse> {
             override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
                 if (response.isSuccessful) {

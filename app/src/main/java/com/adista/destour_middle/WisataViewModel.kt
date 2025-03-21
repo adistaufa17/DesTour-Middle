@@ -3,12 +3,18 @@ package com.adista.destour_middle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.adista.destour_middle.di.AppModule
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import javax.inject.Inject
 
-class WisataViewModel : ViewModel() {
+@HiltViewModel
+class WisataViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
     private val _wisataResponse = MutableLiveData<List<WisataItem>>()
     val wisataResponse: LiveData<List<WisataItem>> = _wisataResponse
 
@@ -22,7 +28,7 @@ class WisataViewModel : ViewModel() {
 
     fun getWisata(token: String) {
         Timber.d("Getting wisata list with token: $token")
-        RetrofitClient.instance.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
+        apiService.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
             override fun onResponse(call: Call<WisataResponse>, response: Response<WisataResponse>) {
                 if (response.isSuccessful) {
                     allWisataList = response.body()?.data?.wisataList ?: emptyList()
@@ -46,7 +52,7 @@ class WisataViewModel : ViewModel() {
     }
 
     fun addBookmark(token: String, idWisata: Int) {
-        RetrofitClient.instance.addBookmark(endpoint = "addBookmarks", token = token, idWisata = idWisata)
+        apiService.addBookmark(endpoint = "addBookmarks", token = token, idWisata = idWisata)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     _bookmarkResponse.value = response.body()
@@ -59,7 +65,7 @@ class WisataViewModel : ViewModel() {
     }
 
     fun removeBookmark(token: String, idWisata: Int) {
-        RetrofitClient.instance.removeBookmark(endpoint = "removeBookmarks", token = token, idWisata = idWisata)
+        apiService.removeBookmark(endpoint = "removeBookmarks", token = token, idWisata = idWisata)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     _bookmarkResponse.value = response.body()
@@ -81,7 +87,7 @@ class WisataViewModel : ViewModel() {
 
     fun likeWisata(token: String, idWisata: Int) {
         Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
-        RetrofitClient.instance.likeWisata(token = token, idWisata = idWisata)
+        apiService.likeWisata(token = token, idWisata = idWisata)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful) {
@@ -105,7 +111,7 @@ class WisataViewModel : ViewModel() {
 
     fun unlikeWisata(token: String, idWisata: Int) {
         Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
-        RetrofitClient.instance.unlikeWisata(token = token, idWisata = idWisata)
+        apiService.unlikeWisata(token = token, idWisata = idWisata)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful) {
@@ -123,50 +129,5 @@ class WisataViewModel : ViewModel() {
                 }
             })
     }
-
-//    fun likeWisata(token: String, idWisata: Int) {
-//        Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
-//        RetrofitClient.instance.likeWisata(token = token, idWisata = idWisata)
-//            .enqueue(object : Callback<ApiResponse> {
-//                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-//                    if (response.isSuccessful) {
-//                        Timber.d("LIKE BERHASIL: ${response.body()?.message}")
-//                        _likeResponse.value = response.body()
-//                    } else if (response.code() == 409) { // Sudah disukai sebelumnya
-//                        Timber.e("Wisata sudah disukai sebelumnya.")
-//                        _likeResponse.value = ApiResponse("failed", 409, "Wisata sudah disukai sebelumnya.")
-//                    } else {
-//                        Timber.e("LIKE GAGAL: ${response.errorBody()?.string()}")
-//                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan like.")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                    Timber.e("LIKE ERROR: ${t.message}")
-//                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan like: ${t.message}")
-//                }
-//            })
-//    }
-//
-//    fun unlikeWisata(token: String, idWisata: Int) {
-//        Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
-//        RetrofitClient.instance.unlikeWisata(token = token, idWisata = idWisata)
-//            .enqueue(object : Callback<ApiResponse> {
-//                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-//                    if (response.isSuccessful) {
-//                        Timber.d("UNLIKE BERHASIL: ${response.body()?.message}")
-//                        _likeResponse.value = response.body()
-//                    } else {
-//                        Timber.e("UNLIKE GAGAL: ${response.errorBody()?.string()}")
-//                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan unlike.")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                    Timber.e("UNLIKE ERROR: ${t.message}")
-//                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan unlike: ${t.message}")
-//                }
-//            })
-//    }
 
 }
