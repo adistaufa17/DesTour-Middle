@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.adista.destour_middle.databinding.ActivityLoginBinding
@@ -16,9 +15,19 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
 
+        // **Cek apakah pengguna sudah login sebelumnya**
+        val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+
+        if (isLoggedIn) {
+            // Jika sudah login, langsung masuk ke MainActivity
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
+        // **Ketika tombol login ditekan**
         binding.buttonLogin.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
@@ -30,21 +39,18 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
-        binding.tvRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
-
         viewModel.loginResponse.observe(this) { response ->
             response?.let {
                 if (it.status == "success") {
                     Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
 
-                    val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+                    // **Simpan status login ke SharedPreferences**
                     val editor = sharedPreferences.edit()
-                    editor.putString("user_token", it.data?.token)
+                    editor.putBoolean("IS_LOGGED_IN", true) // ✅ Menandai bahwa pengguna sudah login
+                    editor.putString("user_token", it.data?.token) // ✅ Menyimpan token
                     editor.apply()
 
+                    // Pindah ke MainActivity
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
@@ -54,5 +60,3 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
-
-

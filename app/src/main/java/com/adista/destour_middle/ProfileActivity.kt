@@ -1,15 +1,11 @@
-
 package com.adista.destour_middle
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.adista.destour_middle.databinding.ActivityProfileBinding
 
 class ProfileActivity : AppCompatActivity() {
@@ -24,7 +20,7 @@ class ProfileActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("user_token", null)
 
-        if(token != null) {
+        if (token != null) {
             viewModel.getProfile(token)
         } else {
             Toast.makeText(this, "Token tidak ditemukan, silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
@@ -39,7 +35,6 @@ class ProfileActivity : AppCompatActivity() {
                     binding.textViewEmail.text = profile.email
                     binding.textViewNomorHp.text = profile.nomorHp
                 } ?: run {
-
                     Toast.makeText(this, "Data profil tidak tersedia", Toast.LENGTH_SHORT).show()
                 }
             } else if (response?.code == 401) {
@@ -50,7 +45,25 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal memuat profil: ${response?.message}", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // **Tambahkan aksi untuk tombol logout**
+        binding.buttonLogout.setOnClickListener {
+            logoutUser()
+        }
+    }
+
+    private fun logoutUser() {
+        val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear() // Hapus semua data login
+        editor.apply()
+
+        Toast.makeText(this, "Anda telah logout", Toast.LENGTH_SHORT).show()
+
+        // Arahkan pengguna ke LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Hapus semua aktivitas sebelumnya
+        startActivity(intent)
+        finish() // Tutup ProfileActivity
     }
 }
-
-

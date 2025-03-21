@@ -3,13 +3,15 @@ package com.adista.destour_middle
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adista.destour_middle.databinding.ActivityMainBinding
-import timber.log.Timber
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -19,22 +21,38 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // **Splash Screen selama 2 detik sebelum cek login**
+        Handler(Looper.getMainLooper()).postDelayed({
+            checkLoginStatus()
+        }, 2000) // 2000ms = 2 detik
+    }
+
+    private fun checkLoginStatus() {
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
         token = sharedPreferences.getString("user_token", null)
 
-        if (token != null) {
-            viewModel.getWisata(token!!)
-        } else {
-            Toast.makeText(this, "Token tidak ditemukan, silakan login", Toast.LENGTH_SHORT).show()
+        if (!isLoggedIn || token.isNullOrEmpty()) {
+            // **Jika belum login, arahkan ke LoginActivity**
             startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            finish() // Tutup MainActivity agar tidak bisa kembali ke sini
+        } else {
+            // **Jika sudah login, lanjutkan ke Home**
+            loadHomeScreen()
         }
+    }
 
-        adapter = WisataAdapter(emptyList(), this) { wisataItem ->
-            toggleBookmark(wisataItem.id)
+    private fun loadHomeScreen() {
+        token?.let { viewModel.getWisata(it) }
+
+        adapter = WisataAdapter(emptyList(), this) { wisataItem, isBookmarked ->
+            token?.let {
+                viewModel.toggleBookmark(it, wisataItem.id, isBookmarked)
+            }
         }
 
         binding.recyclerViewWisata.layoutManager = LinearLayoutManager(this)
@@ -56,13 +74,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, ProfileActivity::class.java)) // **Pergi ke halaman profil (Logout di sana)**
         }
 
         viewModel.bookmarkResponse.observe(this) { response ->
             if (response?.status == "success") {
                 Toast.makeText(this, "Bookmark diperbarui!", Toast.LENGTH_SHORT).show()
-                viewModel.getWisata(token!!)
+                token?.let { viewModel.getWisata(it) }
             } else {
                 Toast.makeText(this, "Gagal memperbarui bookmark", Toast.LENGTH_SHORT).show()
             }

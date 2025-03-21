@@ -46,4 +46,12 @@ interface ApiService {
         @Query("id_wisata") idWisata: Int
     ): Call<com.adista.destour_middle.ApiResponse>
 
+    @POST("exec")
+    fun removeBookmark(
+        @Query("endpoint") endpoint: String = "removeBookmarks",
+        @Query("token") token: String,
+        @Query("id_wisata") idWisata: Int
+    ): Call<ApiResponse>
+
+
 }

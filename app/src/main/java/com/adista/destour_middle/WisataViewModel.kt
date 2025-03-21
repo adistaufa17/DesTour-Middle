@@ -17,14 +17,12 @@ class WisataViewModel : ViewModel() {
 
     private var allWisataList: List<WisataItem> = emptyList()
 
-    // Fungsi untuk mendapatkan wisata
     fun getWisata(token: String) {
-        RetrofitClient.instance.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
+        RetrofitClient.instance.getListWisata(token).enqueue(object : Callback<WisataResponse> {
             override fun onResponse(call: Call<WisataResponse>, response: Response<WisataResponse>) {
                 if (response.isSuccessful) {
                     allWisataList = response.body()?.data?.wisataList ?: emptyList()
                     _wisataResponse.value = allWisataList
-                    Timber.d("Wisata data retrieved: $allWisataList")
                 } else {
                     Timber.e("Error fetching wisata data: ${response.errorBody()?.string()}")
                 }
@@ -35,28 +33,46 @@ class WisataViewModel : ViewModel() {
             }
         })
     }
-
-    // Fungsi pencarian wisata lokal berdasarkan query
     fun searchWisataOffline(query: String) {
         val filteredList = allWisataList.filter { it.title.contains(query, ignoreCase = true) }
         _wisataResponse.value = filteredList
     }
 
-    // Fungsi untuk menambahkan wisata ke bookmarks
-    fun addBookmark(token: String, idWisata: Int) {
-        RetrofitClient.instance.addBookmark(token = token, idWisata = idWisata).enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                if (response.isSuccessful) {
-                    _bookmarkResponse.value = response.body()
-                    Timber.d("Bookmark added: ${response.body()}")
-                } else {
-                    Timber.e("Error adding bookmark: ${response.errorBody()?.string()}")
+    // ✅ Fungsi untuk menambah atau menghapus bookmark berdasarkan statusnya
+    fun toggleBookmark(token: String, idWisata: Int, isBookmarked: Boolean) {
+        if (isBookmarked) {
+            // 🔴 Jika sudah di-bookmark, maka hapus dari server
+            RetrofitClient.instance.removeBookmark(token, idWisata).enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        _bookmarkResponse.value = response.body()
+                        Timber.d("Bookmark removed: ${response.body()}")
+                    } else {
+                        Timber.e("Error removing bookmark: ${response.errorBody()?.string()}")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Timber.e("Failure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Timber.e("Failure: ${t.message}")
+                }
+            })
+        } else {
+            // ✅ Jika belum di-bookmark, maka tambahkan ke server
+            RetrofitClient.instance.addBookmark(token, idWisata).enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        _bookmarkResponse.value = response.body()
+                        Timber.d("Bookmark added: ${response.body()}")
+                    } else {
+                        Timber.e("Error adding bookmark: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Timber.e("Failure: ${t.message}")
+                }
+            })
+        }
     }
 }
+
