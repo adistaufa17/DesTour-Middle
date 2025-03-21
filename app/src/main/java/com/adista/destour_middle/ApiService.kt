@@ -16,10 +16,13 @@ interface ApiService {
     @POST("exec")
     fun login(@Body loginRequest: LoginRequest): Call<AuthResponse>
 
+    @Headers("Content-Type: application/json")
     @GET("exec")
     fun getListWisata(
+        @Query("endpoint") endpoint: String = "listwisata",
         @Query("token") token: String,
-        @Query("endpoint") endpoint: String = "listwisata"
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 10
     ): Call<WisataResponse>
 
     @GET("exec")
@@ -49,11 +52,17 @@ interface ApiService {
         @Query("id_wisata") idWisata: Int
     ): Call<ApiResponse>
 
-    @GET("exec")
-    fun getBookmarks(
-        @Query("endpoint") endpoint: String = "getBookmarks",
+    @POST("exec")
+    fun likeWisata(
+        @Query("endpoint") endpoint: String = "likeWisata",
         @Query("token") token: String,
-        @Query("page") page: Int = 1,
-        @Query("limit") limit: Int = 10
-    ): Call<WisataResponse>
+        @Query("id_wisata") idWisata: Int
+    ): Call<ApiResponse>
+
+    @POST("exec")
+    fun unlikeWisata(
+        @Query("endpoint") endpoint: String = "unlikeWisata",
+        @Query("token") token: String,
+        @Query("id_wisata") idWisata: Int
+    ): Call<ApiResponse>
 }

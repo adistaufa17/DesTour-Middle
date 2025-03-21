@@ -45,4 +45,15 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_bookmark" />
 
+    <ImageView
+        android:id="@+id/buttonLike"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/imageViewWisata"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_liked"
+        android:contentDescription="Like button" />
+
 </LinearLayout>

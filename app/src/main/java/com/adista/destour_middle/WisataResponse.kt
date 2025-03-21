@@ -11,8 +11,7 @@ data class WisataResponse(
 
 data class WisataData(
     @SerializedName("wisataList") val wisataList: List<WisataItem>
-) {
-}
+)
 
 data class WisataItem(
     @SerializedName("id") val id: Int,
@@ -20,6 +19,6 @@ data class WisataItem(
     @SerializedName("title") val title: String,
     @SerializedName("lokasi") val lokasi: String,
     @SerializedName("deskripsi") val deskripsi: String,
-    @SerializedName("is_bookmarked") val isBookmarked: Boolean = false
-
+    @SerializedName("is_bookmarked") val isBookmarked: Boolean = false,
+    @SerializedName("is_liked") val isLiked: Boolean = false
 )

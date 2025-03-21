@@ -17,7 +17,9 @@ class DetailWisataActivity : AppCompatActivity() {
     private val viewModel: WisataViewModel by viewModels()
     private var wisataId: Int = 0
     private var isBookmarked: Boolean = false
+    private var isLiked: Boolean = false
     private var token: String? = null
+    private var resultChanged = false // Flag untuk melacak apakah ada perubahan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +44,21 @@ class DetailWisataActivity : AppCompatActivity() {
             .load(imageUrl)
             .into(binding.detailImage)
 
+        // Ambil status dari SharedPreferences
         isBookmarked = sharedPreferences.getBoolean("BOOKMARK_$wisataId", false)
+        isLiked = sharedPreferences.getBoolean("LIKE_$wisataId", false)
+
+        // Perbarui ikon sesuai status
         updateBookmarkIcon()
+        updateLikeIcon()
+
 
         binding.detailBookmark.setOnClickListener {
             toggleBookmark()
+        }
+
+        binding.detailLike.setOnClickListener {
+            toggleLike()
         }
 
         // Observe bookmark response
@@ -54,9 +66,33 @@ class DetailWisataActivity : AppCompatActivity() {
             if (response?.status == "success") {
                 Toast.makeText(this, if (isBookmarked) "Bookmark ditambahkan" else "Bookmark dihapus", Toast.LENGTH_SHORT).show()
                 Timber.d("Bookmark updated via API: ${response.message}")
-            } else {
-                Toast.makeText(this, "Gagal memperbarui bookmark", Toast.LENGTH_SHORT).show()
-                Timber.e("Failed to update bookmark: ${response?.message}")
+            } else if (response != null) {
+                Toast.makeText(this, "Gagal memperbarui bookmark: ${response.message}", Toast.LENGTH_SHORT).show()
+                Timber.e("Failed to update bookmark: ${response.message}")
+
+                // Kembalikan status jika gagal
+                isBookmarked = !isBookmarked
+                updateBookmarkIcon()
+
+                // Perbarui SharedPreferences
+                sharedPreferences.edit().putBoolean("BOOKMARK_$wisataId", isBookmarked).apply()
+            }
+        }
+
+        viewModel.likeResponse.observe(this) { response ->
+            if (response?.status == "success") {
+                Toast.makeText(this, if (isLiked) "Wisata disukai" else "Batal menyukai wisata", Toast.LENGTH_SHORT).show()
+                Timber.d("Like updated via API: ${response.message}")
+            } else if (response != null) {
+                Toast.makeText(this, "Gagal memperbarui like: ${response.message}", Toast.LENGTH_SHORT).show()
+                Timber.e("Failed to update like: ${response.message}")
+
+                // Kembalikan status jika gagal
+                isLiked = !isLiked
+                updateLikeIcon()
+
+                // Perbarui SharedPreferences
+                sharedPreferences.edit().putBoolean("LIKE_$wisataId", isLiked).apply()
             }
         }
     }
@@ -65,19 +101,21 @@ class DetailWisataActivity : AppCompatActivity() {
         binding.detailBookmark.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
     }
 
+    private fun updateLikeIcon() {
+        binding.detailLike.setImageResource(if (isLiked) R.drawable.ic_liked else R.drawable.ic_like)
+    }
+
     private fun toggleBookmark() {
         isBookmarked = !isBookmarked
+        resultChanged = true
 
-        // Simpan status bookmark di SharedPreferences
-        sharedPreferences.edit().apply {
-            putBoolean("BOOKMARK_$wisataId", isBookmarked)
-            commit() // Gunakan commit() untuk memastikan data tersimpan segera
-        }
+        // Perbarui status di SharedPreferences
+        sharedPreferences.edit().putBoolean("BOOKMARK_$wisataId", isBookmarked).apply()
 
-        // Perbarui icon bookmark
+        // Perbarui ikon
         updateBookmarkIcon()
 
-        // Gunakan API untuk update bookmark
+        // Panggil API
         token?.let { safeToken ->
             if (isBookmarked) {
                 viewModel.addBookmark(safeToken, wisataId)
@@ -85,12 +123,26 @@ class DetailWisataActivity : AppCompatActivity() {
                 viewModel.removeBookmark(safeToken, wisataId)
             }
         }
-
-        // Kirim hasil ke MainActivity
-        val resultIntent = Intent().apply {
-            putExtra("WISATA_ID", wisataId)
-            putExtra("IS_BOOKMARKED", isBookmarked)
-        }
-        setResult(RESULT_OK, resultIntent)
     }
+
+    private fun toggleLike() {
+        isLiked = !isLiked
+        resultChanged = true
+
+        // Perbarui status di SharedPreferences
+        sharedPreferences.edit().putBoolean("LIKE_$wisataId", isLiked).apply()
+
+        // Perbarui ikon
+        updateLikeIcon()
+
+        // Panggil API
+        token?.let { safeToken ->
+            if (isLiked) {
+                viewModel.likeWisata(safeToken, wisataId)
+            } else {
+                viewModel.unlikeWisata(safeToken, wisataId)
+            }
+        }
+    }
+
 }
