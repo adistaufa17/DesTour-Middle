@@ -15,9 +15,11 @@ class WisataViewModel : ViewModel() {
     private val _bookmarkResponse = MutableLiveData<ApiResponse>()
     val bookmarkResponse: LiveData<ApiResponse> = _bookmarkResponse
 
+    private val _likeResponse = MutableLiveData<ApiResponse>()
+    val likeResponse: LiveData<ApiResponse> = _likeResponse
+
     private var allWisataList: List<WisataItem> = emptyList()
 
-    // Fungsi untuk mendapatkan wisata
     fun getWisata(token: String) {
         Timber.d("Getting wisata list with token: $token")
         RetrofitClient.instance.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
@@ -38,83 +40,37 @@ class WisataViewModel : ViewModel() {
         })
     }
 
-    // Fungsi pencarian wisata lokal berdasarkan query
     fun searchWisataOffline(query: String) {
         val filteredList = allWisataList.filter { it.title.contains(query, ignoreCase = true) }
         _wisataResponse.value = filteredList
     }
 
-    // Fungsi untuk menambahkan wisata ke bookmarks (POST method)
     fun addBookmark(token: String, idWisata: Int) {
-        Timber.d("Adding bookmark with token: $token, idWisata: $idWisata")
-        RetrofitClient.instance.addBookmark(
-            endpoint = "addBookmarks",
-            token = token,
-            idWisata = idWisata
-        ).enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                if (response.isSuccessful) {
+        RetrofitClient.instance.addBookmark(endpoint = "addBookmarks", token = token, idWisata = idWisata)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     _bookmarkResponse.value = response.body()
-                    Timber.d("Bookmark added successfully: ${response.body()}")
-                } else {
-                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                    Timber.e("Error adding bookmark: code=${response.code()}, body=$errorBody")
-                    // Kirim response error ke UI
-                    _bookmarkResponse.value = ApiResponse(
-                        status = "failed",
-                        code = response.code(),
-                        message = "Gagal menambahkan bookmark: $errorBody"
-                    )
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Timber.e(t, "Failure adding bookmark: ${t.message}")
-                _bookmarkResponse.value = ApiResponse(
-                    status = "failed",
-                    code = -1,
-                    message = "Gagal menambahkan bookmark: ${t.message}"
-                )
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    _bookmarkResponse.value = ApiResponse("failed", -1, "Gagal menambahkan bookmark: ${t.message}")
+                }
+            })
     }
 
-    // Fungsi untuk menghapus wisata dari bookmarks (POST method)
     fun removeBookmark(token: String, idWisata: Int) {
-        Timber.d("Removing bookmark with token: $token, idWisata: $idWisata")
-        RetrofitClient.instance.removeBookmark(
-            endpoint = "removeBookmarks",
-            token = token,
-            idWisata = idWisata
-        ).enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                if (response.isSuccessful) {
+        RetrofitClient.instance.removeBookmark(endpoint = "removeBookmarks", token = token, idWisata = idWisata)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     _bookmarkResponse.value = response.body()
-                    Timber.d("Bookmark removed successfully: ${response.body()}")
-                } else {
-                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                    Timber.e("Error removing bookmark: code=${response.code()}, body=$errorBody")
-                    // Kirim response error ke UI
-                    _bookmarkResponse.value = ApiResponse(
-                        status = "failed",
-                        code = response.code(),
-                        message = "Gagal menghapus bookmark: $errorBody"
-                    )
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Timber.e(t, "Failure removing bookmark: ${t.message}")
-                _bookmarkResponse.value = ApiResponse(
-                    status = "failed",
-                    code = -1,
-                    message = "Gagal menghapus bookmark: ${t.message}"
-                )
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    _bookmarkResponse.value = ApiResponse("failed", -1, "Gagal menghapus bookmark: ${t.message}")
+                }
+            })
     }
 
-    // Fungsi untuk toggle bookmark (menambah atau menghapus)
     fun toggleBookmark(token: String, idWisata: Int, isCurrentlyBookmarked: Boolean) {
         if (isCurrentlyBookmarked) {
             removeBookmark(token, idWisata)
@@ -122,4 +78,95 @@ class WisataViewModel : ViewModel() {
             addBookmark(token, idWisata)
         }
     }
+
+    fun likeWisata(token: String, idWisata: Int) {
+        Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
+        RetrofitClient.instance.likeWisata(token = token, idWisata = idWisata)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        Timber.d("LIKE BERHASIL: ${response.body()?.message}")
+                        _likeResponse.value = response.body()
+                    } else if (response.code() == 409) { // Sudah disukai sebelumnya
+                        Timber.e("LIKE GAGAL: Wisata sudah disukai sebelumnya.")
+                        _likeResponse.value = ApiResponse("failed", 409, "Wisata sudah disukai sebelumnya.")
+                    } else {
+                        Timber.e("LIKE GAGAL: ${response.errorBody()?.string()}")
+                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan like.")
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Timber.e("LIKE ERROR: ${t.message}")
+                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan like: ${t.message}")
+                }
+            })
+    }
+
+    fun unlikeWisata(token: String, idWisata: Int) {
+        Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
+        RetrofitClient.instance.unlikeWisata(token = token, idWisata = idWisata)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful) {
+                        Timber.d("UNLIKE BERHASIL: ${response.body()?.message}")
+                        _likeResponse.value = response.body()
+                    } else {
+                        Timber.e("UNLIKE GAGAL: ${response.errorBody()?.string()}")
+                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan unlike.")
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Timber.e("UNLIKE ERROR: ${t.message}")
+                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan unlike: ${t.message}")
+                }
+            })
+    }
+
+//    fun likeWisata(token: String, idWisata: Int) {
+//        Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
+//        RetrofitClient.instance.likeWisata(token = token, idWisata = idWisata)
+//            .enqueue(object : Callback<ApiResponse> {
+//                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+//                    if (response.isSuccessful) {
+//                        Timber.d("LIKE BERHASIL: ${response.body()?.message}")
+//                        _likeResponse.value = response.body()
+//                    } else if (response.code() == 409) { // Sudah disukai sebelumnya
+//                        Timber.e("Wisata sudah disukai sebelumnya.")
+//                        _likeResponse.value = ApiResponse("failed", 409, "Wisata sudah disukai sebelumnya.")
+//                    } else {
+//                        Timber.e("LIKE GAGAL: ${response.errorBody()?.string()}")
+//                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan like.")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+//                    Timber.e("LIKE ERROR: ${t.message}")
+//                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan like: ${t.message}")
+//                }
+//            })
+//    }
+//
+//    fun unlikeWisata(token: String, idWisata: Int) {
+//        Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
+//        RetrofitClient.instance.unlikeWisata(token = token, idWisata = idWisata)
+//            .enqueue(object : Callback<ApiResponse> {
+//                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+//                    if (response.isSuccessful) {
+//                        Timber.d("UNLIKE BERHASIL: ${response.body()?.message}")
+//                        _likeResponse.value = response.body()
+//                    } else {
+//                        Timber.e("UNLIKE GAGAL: ${response.errorBody()?.string()}")
+//                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan unlike.")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+//                    Timber.e("UNLIKE ERROR: ${t.message}")
+//                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan unlike: ${t.message}")
+//                }
+//            })
+//    }
+
 }

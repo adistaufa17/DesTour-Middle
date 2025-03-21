@@ -56,4 +56,19 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 10
     ): Call<WisataResponse>
+
+    @POST("exec")
+    fun likeWisata(
+        @Query("endpoint") endpoint: String = "likeWisata",
+        @Query("token") token: String,
+        @Query("id_wisata") idWisata: Int
+    ): Call<ApiResponse>
+
+    @POST("exec")
+    fun unlikeWisata(
+        @Query("endpoint") endpoint: String = "unlikeWisata",
+        @Query("token") token: String,
+        @Query("id_wisata") idWisata: Int
+    ): Call<ApiResponse>
+
 }

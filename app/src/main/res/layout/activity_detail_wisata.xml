@@ -42,4 +42,11 @@
         android:layout_height="48dp"
         android:layout_marginTop="12dp"
         android:src="@drawable/ic_bookmark"/>
+
+    <ImageView
+        android:id="@+id/detailLike"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_like"/>
 </LinearLayout>

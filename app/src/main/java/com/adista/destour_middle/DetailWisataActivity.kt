@@ -17,6 +17,7 @@ class DetailWisataActivity : AppCompatActivity() {
     private val viewModel: WisataViewModel by viewModels()
     private var wisataId: Int = 0
     private var isBookmarked: Boolean = false
+    private var isLiked: Boolean = false
     private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +50,13 @@ class DetailWisataActivity : AppCompatActivity() {
             toggleBookmark()
         }
 
+        isLiked = sharedPreferences.getBoolean("LIKE_$wisataId", false)
+        updateLikeIcon()
+
+        binding.detailLike.setOnClickListener {
+            toggleLike()
+        }
+
         // Observe bookmark response
         viewModel.bookmarkResponse.observe(this) { response ->
             if (response?.status == "success") {
@@ -59,8 +67,29 @@ class DetailWisataActivity : AppCompatActivity() {
                 Timber.e("Failed to update bookmark: ${response?.message}")
             }
         }
+
+        // Observe like response
+//        viewModel.likeResponse.observe(this) { response ->
+//            if (response?.status == "success") {
+//                Toast.makeText(this, if (isLiked) "Disukai" else "Batal Suka", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(this, "Gagal memperbarui like", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+
+        viewModel.likeResponse.observe(this) { response ->
+            if (response?.status == "success") {
+                Toast.makeText(this, if (isLiked) "Disukai" else "Batal suka", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Gagal memperbarui like", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
+
+    private fun updateLikeIcon() {
+        binding.detailLike.setImageResource(if (isLiked) R.drawable.ic_liked else R.drawable.ic_like)
+    }
     private fun updateBookmarkIcon() {
         binding.detailBookmark.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
     }
@@ -71,7 +100,7 @@ class DetailWisataActivity : AppCompatActivity() {
         // Simpan status bookmark di SharedPreferences
         sharedPreferences.edit().apply {
             putBoolean("BOOKMARK_$wisataId", isBookmarked)
-            commit() // Gunakan commit() untuk memastikan data tersimpan segera
+            commit()
         }
 
         // Perbarui icon bookmark
@@ -93,4 +122,76 @@ class DetailWisataActivity : AppCompatActivity() {
         }
         setResult(RESULT_OK, resultIntent)
     }
+
+    private fun toggleLike() {
+        Timber.d("Toggle Like untuk ID Wisata: $wisataId, Status Sebelum: $isLiked")
+
+        token?.let { safeToken ->
+            if (isLiked) {
+                Timber.d("Mengirim UNLIKE untuk wisata ID: $wisataId")
+                viewModel.unlikeWisata(safeToken, wisataId)
+            } else {
+                Timber.d("Mengirim LIKE untuk wisata ID: $wisataId")
+                viewModel.likeWisata(safeToken, wisataId)
+            }
+        }
+
+        isLiked = !isLiked
+        updateLikeIcon()
+
+        sharedPreferences.edit().apply {
+            putBoolean("LIKE_$wisataId", isLiked)
+            commit()
+        }
+    }
+
+
+//    private fun toggleLike() {
+//        token?.let { safeToken ->
+//            if (isLiked) {
+//                // Jika sudah di-like, lakukan unlike
+//                viewModel.unlikeWisata(safeToken, wisataId)
+//                Toast.makeText(this, "Batal menyukai wisata", Toast.LENGTH_SHORT).show()
+//            } else {
+//                // Jika belum di-like, lakukan like
+//                viewModel.likeWisata(safeToken, wisataId)
+//                Toast.makeText(this, "Wisata berhasil disukai", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//
+//        // Perbarui status Like di aplikasi
+//        isLiked = !isLiked
+//        updateLikeIcon()
+//
+//        // Simpan status Like di SharedPreferences
+//        sharedPreferences.edit().apply {
+//            putBoolean("LIKE_$wisataId", isLiked)
+//            commit()
+//        }
+//    }
+
+
+//    private fun toggleLike() {
+//        token?.let { safeToken ->
+//            if (isLiked) {
+//                // Jika sudah di-like, maka lakukan unlike
+//                viewModel.unlikeWisata(safeToken, wisataId)
+//            } else {
+//                // Jika belum di-like, maka lakukan like
+//                viewModel.likeWisata(safeToken, wisataId)
+//            }
+//        }
+//
+//        // Perbarui status Like di aplikasi
+//        isLiked = !isLiked
+//        updateLikeIcon()
+//
+//        // Simpan status Like di SharedPreferences
+//        sharedPreferences.edit().apply {
+//            putBoolean("LIKE_$wisataId", isLiked)
+//            commit()
+//        }
+//    }
+
+
 }
