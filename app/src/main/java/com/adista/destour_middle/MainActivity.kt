@@ -89,9 +89,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Bookmark diperbarui!", Toast.LENGTH_SHORT).show()
                 token?.let { viewModel.getWisata(it) }
             } else {
-                Toast.makeText(this, "Gagal memperbarui bookmark", Toast.LENGTH_SHORT).show()
+                val msg = if (response?.code == 409) "Wisata sudah dibookmark." else "Gagal memperbarui bookmark"
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         }
+
 
         // ✅ Load awal data
         viewModel.getWisata(token!!)
@@ -106,18 +108,19 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val wisataId = result.data?.getIntExtra("WISATA_ID", -1) ?: -1
                 val isBookmarked = result.data?.getBooleanExtra("IS_BOOKMARKED", false) ?: false
+                val isLiked = result.data?.getBooleanExtra("IS_LIKED", false) ?: false
 
                 if (wisataId != -1) {
                     token?.let { safeToken ->
-                        if (isBookmarked) {
-                            viewModel.addBookmark(safeToken, wisataId)
-                        } else {
-                            viewModel.removeBookmark(safeToken, wisataId)
-                        }
+                        viewModel.toggleBookmark(safeToken, wisataId, isBookmarked)
+                        viewModel.toggleLike(safeToken, wisataId, isLiked) // ✅ LIKE
                     }
-                    adapter.updateBookmarkStatus(wisataId)
+
+                    adapter.updateBookmarkStatus(wisataId, isBookmarked)
                     adapter.setFilter(currentFilter, sharedPreferences)
                 }
             }
         }
+
+
 }

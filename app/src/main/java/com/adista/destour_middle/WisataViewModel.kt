@@ -130,4 +130,13 @@ class WisataViewModel @Inject constructor(
             })
     }
 
+    fun toggleLike(token: String, idWisata: Int, isCurrentlyLiked: Boolean) {
+        if (isCurrentlyLiked) {
+            unlikeWisata(token, idWisata)
+        } else {
+            likeWisata(token, idWisata)
+        }
+    }
+
+
 }

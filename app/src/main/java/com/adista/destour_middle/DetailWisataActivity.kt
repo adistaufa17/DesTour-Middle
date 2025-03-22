@@ -120,9 +120,10 @@ class DetailWisataActivity : AppCompatActivity() {
         val resultIntent = Intent().apply {
             putExtra("WISATA_ID", wisataId)
             putExtra("IS_BOOKMARKED", isBookmarked)
-            putExtra("IS_UPDATED", true)
+            putExtra("IS_LIKED", isLiked) // ✅ tambahkan
         }
         setResult(RESULT_OK, resultIntent)
+
     }
 
     private fun toggleLike() {

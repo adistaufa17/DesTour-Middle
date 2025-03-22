@@ -96,14 +96,20 @@ class WisataAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateBookmarkStatus(wisataId: Int) {
+    fun updateBookmarkStatus(wisataId: Int, isBookmarked: Boolean) {
         for (i in wisataData.indices) {
             if (wisataData[i].id == wisataId) {
+                // Update sharedPreferences biar statusnya langsung nyambung ke icon
+                val editor = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).edit()
+                editor.putBoolean("BOOKMARK_$wisataId", isBookmarked)
+                editor.apply()
+
                 notifyItemChanged(i)
                 break
             }
         }
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun setFilter(filterType: String, sharedPreferences: SharedPreferences) {
