@@ -2,6 +2,7 @@ package com.adista.destour_middle
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adista.destour_middle.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WisataViewModel by viewModels()
     private lateinit var adapter: WisataAdapter
+    private lateinit var sharedPreferences: SharedPreferences
     private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,43 +27,39 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+        // ✅ Setup SharedPreferences & Token
+        sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
         token = sharedPreferences.getString("user_token", null)
 
-        if (isLoggedIn && !token.isNullOrEmpty()) {
-            // Jika login, load data wisata
-            viewModel.getWisata(token!!)
-        } else {
+        if (!isLoggedIn || token.isNullOrEmpty()) {
             Toast.makeText(this, "Token tidak ditemukan, silakan login", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+            return
         }
 
+        // ✅ Setup Adapter
         adapter = WisataAdapter(emptyList(), this) { wisataItem ->
-            val isCurrentlyBookmarked = sharedPreferences.getBoolean("BOOKMARK_${wisataItem.id}", false)
-
-            // Gunakan toggleBookmark dari API
-            token?.let { safeToken ->
-                viewModel.toggleBookmark(safeToken, wisataItem.id, isCurrentlyBookmarked)
-            }
-
-            // Update status bookmark di SharedPreferences
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("BOOKMARK_${wisataItem.id}", !isCurrentlyBookmarked)
-            editor.commit() // Menggunakan commit() bukan apply()
-            adapter.updateBookmarkStatus(wisataItem.id, !isCurrentlyBookmarked)
+            val isBookmarked = sharedPreferences.getBoolean("BOOKMARK_${wisataItem.id}", false)
+            sharedPreferences.edit().putBoolean("BOOKMARK_${wisataItem.id}", !isBookmarked).apply()
+            adapter.setFilter(currentFilter, sharedPreferences)
         }
 
         binding.recyclerViewWisata.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewWisata.adapter = adapter
 
-        viewModel.wisataResponse.observe(this) { wisataList ->
-            wisataList?.let {
-                adapter.updateData(it)
+        // ✅ Listener tombol filter
+        binding.btnOpenFilter.setOnClickListener {
+            val bottomSheet = BottomSheetFilterWisata { selectedFilter ->
+                Timber.d("Filter dipilih: $selectedFilter")
+                currentFilter = selectedFilter
+                adapter.setFilter(selectedFilter, sharedPreferences)
             }
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
+        // ✅ Pencarian Offline
         binding.buttonSearch.setOnClickListener {
             val query = binding.editTextSearch.text.toString().trim()
             if (query.isNotEmpty()) {
@@ -69,10 +69,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // ✅ Tombol ke halaman profil
         binding.btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
+        // ✅ Observer data wisata
+        viewModel.wisataResponse.observe(this) { wisataList ->
+            wisataList?.let {
+                Timber.d("Total data diterima: ${it.size}")
+                adapter.updateData(it)
+                adapter.setFilter(currentFilter, sharedPreferences)
+            }
+        }
+
+        // ✅ Observer bookmark response
         viewModel.bookmarkResponse.observe(this) { response ->
             if (response?.status == "success") {
                 Toast.makeText(this, "Bookmark diperbarui!", Toast.LENGTH_SHORT).show()
@@ -81,8 +92,15 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal memperbarui bookmark", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // ✅ Load awal data
+        viewModel.getWisata(token!!)
     }
 
+    // ✅ Filter yang sedang aktif
+    private var currentFilter: String = "Semua"
+
+    // ✅ Result dari DetailWisataActivity
     val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -90,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                 val isBookmarked = result.data?.getBooleanExtra("IS_BOOKMARKED", false) ?: false
 
                 if (wisataId != -1) {
-                    // Update status bookmark melalui API
                     token?.let { safeToken ->
                         if (isBookmarked) {
                             viewModel.addBookmark(safeToken, wisataId)
@@ -98,8 +115,8 @@ class MainActivity : AppCompatActivity() {
                             viewModel.removeBookmark(safeToken, wisataId)
                         }
                     }
-                    // Update UI
-                    adapter.updateBookmarkStatus(wisataId, isBookmarked)
+                    adapter.updateBookmarkStatus(wisataId)
+                    adapter.setFilter(currentFilter, sharedPreferences)
                 }
             }
         }

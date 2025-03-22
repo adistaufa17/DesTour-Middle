@@ -45,4 +45,11 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_bookmark" />
 
+    <ImageView
+        android:id="@+id/buttonLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_like" />
+
+
 </LinearLayout>

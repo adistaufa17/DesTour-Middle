@@ -117,10 +117,10 @@ class DetailWisataActivity : AppCompatActivity() {
             }
         }
 
-        // Kirim hasil ke MainActivity
         val resultIntent = Intent().apply {
             putExtra("WISATA_ID", wisataId)
             putExtra("IS_BOOKMARKED", isBookmarked)
+            putExtra("IS_UPDATED", true)
         }
         setResult(RESULT_OK, resultIntent)
     }

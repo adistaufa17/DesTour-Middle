@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DesTour-Middle</string>
+
+    <string-array name="filter_options">
+        <item>All</item>
+        <item>Bookmarked</item>
+        <item>Liked</item>
+    </string-array>
 </resources>
