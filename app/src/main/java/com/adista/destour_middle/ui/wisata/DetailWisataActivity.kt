@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.wisata
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.adista.destour_middle.R
 import com.adista.destour_middle.databinding.ActivityDetailWisataBinding
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,7 +81,7 @@ class DetailWisataActivity : AppCompatActivity() {
 
 
     private fun updateLikeIcon() {
-        binding.detailLike.setImageResource(if (isLiked) R.drawable.ic_liked else R.drawable.ic_like)
+        binding.detailLike.setImageResource(if (isLiked) R.drawable.ic_like else R.drawable.ic_liked)
     }
     private fun updateBookmarkIcon() {
         binding.detailBookmark.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)

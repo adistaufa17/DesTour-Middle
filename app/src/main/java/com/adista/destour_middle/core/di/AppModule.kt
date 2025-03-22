@@ -1,5 +1,6 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.core.di
 
+import com.adista.destour_middle.core.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

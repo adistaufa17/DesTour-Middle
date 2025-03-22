@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.adista.destour_middle.MainActivity
 import com.adista.destour_middle.databinding.ActivityRegisterBinding
+import com.adista.destour_middle.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

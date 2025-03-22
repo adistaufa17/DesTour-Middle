@@ -1,8 +1,12 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.wisata
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.adista.destour_middle.core.network.ApiResponse
+import com.adista.destour_middle.data.model.WisataItem
+import com.adista.destour_middle.data.model.WisataResponse
+import com.adista.destour_middle.core.network.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback

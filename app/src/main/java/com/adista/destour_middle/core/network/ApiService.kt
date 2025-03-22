@@ -1,5 +1,10 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.core.network
 
+import com.adista.destour_middle.data.request.LoginRequest
+import com.adista.destour_middle.data.request.RegisterRequest
+import com.adista.destour_middle.data.model.WisataResponse
+import com.adista.destour_middle.data.model.AuthResponse
+import com.adista.destour_middle.data.model.ProfileResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

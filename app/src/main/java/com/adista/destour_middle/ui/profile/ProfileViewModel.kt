@@ -1,9 +1,11 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.profile
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.adista.destour_middle.data.model.ProfileResponse
+import com.adista.destour_middle.core.network.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback

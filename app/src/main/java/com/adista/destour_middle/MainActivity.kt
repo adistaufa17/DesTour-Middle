@@ -10,6 +10,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adista.destour_middle.databinding.ActivityMainBinding
+import com.adista.destour_middle.ui.login.LoginActivity
+import com.adista.destour_middle.ui.profile.ProfileActivity
+import com.adista.destour_middle.ui.wisata.BottomSheetFilterWisata
+import com.adista.destour_middle.ui.wisata.WisataAdapter
+import com.adista.destour_middle.ui.wisata.WisataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

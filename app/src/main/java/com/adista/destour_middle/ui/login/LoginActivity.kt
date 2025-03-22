@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.login
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.adista.destour_middle.MainActivity
 import com.adista.destour_middle.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 

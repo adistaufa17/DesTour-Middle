@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.wisata
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.adista.destour_middle.MainActivity
+import com.adista.destour_middle.R
+import com.adista.destour_middle.data.model.WisataItem
 import com.bumptech.glide.Glide
 import timber.log.Timber
 
@@ -46,7 +49,7 @@ class WisataAdapter(
         holder.title.text = wisataItem.title
         holder.lokasi.text = wisataItem.lokasi
         holder.deskripsi.text = wisataItem.deskripsi
-        holder.likeButton.setImageResource(if (isLiked) R.drawable.ic_liked else R.drawable.ic_like)
+        holder.likeButton.setImageResource(if (isLiked) R.drawable.ic_like else R.drawable.ic_liked)
 
         val imageUrl = wisataItem.imageUrl
         val imageId = imageUrl.split("/")[5]

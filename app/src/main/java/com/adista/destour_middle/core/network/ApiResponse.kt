@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.core.network
 
 import com.google.gson.annotations.SerializedName
 

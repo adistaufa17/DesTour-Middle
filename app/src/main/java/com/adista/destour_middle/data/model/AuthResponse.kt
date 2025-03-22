@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.data.model
 import com.google.gson.annotations.SerializedName
 
 data class AuthResponse(

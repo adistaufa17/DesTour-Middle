@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.data.request
 
 data class RegisterRequest(
     val endpoint: String = "register",

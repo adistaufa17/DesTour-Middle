@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista.destour_middle.ui.wisata
 
 import android.os.Bundle
 import android.view.LayoutInflater

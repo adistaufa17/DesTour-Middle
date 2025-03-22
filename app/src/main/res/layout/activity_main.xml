@@ -71,7 +71,7 @@
         android:id="@+id/btn_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_like"
+        android:src="@drawable/ic_liked"
         android:contentDescription="Profil"
         app:layout_anchor="@id/recyclerViewWisata" app:layout_anchorGravity="bottom|end"
         android:layout_margin="16dp"
