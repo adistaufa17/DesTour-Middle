@@ -59,7 +59,6 @@ class DetailWisataActivity : AppCompatActivity() {
             toggleLike()
         }
 
-        // Observe bookmark response
         viewModel.bookmarkResponse.observe(this) { response ->
             if (response?.status == "success") {
                 Toast.makeText(this, if (isBookmarked) "Bookmark ditambahkan" else "Bookmark dihapus", Toast.LENGTH_SHORT).show()
@@ -69,15 +68,6 @@ class DetailWisataActivity : AppCompatActivity() {
                 Timber.e("Failed to update bookmark: ${response?.message}")
             }
         }
-
-        // Observe like response
-//        viewModel.likeResponse.observe(this) { response ->
-//            if (response?.status == "success") {
-//                Toast.makeText(this, if (isLiked) "Disukai" else "Batal Suka", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this, "Gagal memperbarui like", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
         viewModel.likeResponse.observe(this) { response ->
             if (response?.status == "success") {
@@ -120,7 +110,7 @@ class DetailWisataActivity : AppCompatActivity() {
         val resultIntent = Intent().apply {
             putExtra("WISATA_ID", wisataId)
             putExtra("IS_BOOKMARKED", isBookmarked)
-            putExtra("IS_LIKED", isLiked) // ✅ tambahkan
+            putExtra("IS_LIKED", isLiked)
         }
         setResult(RESULT_OK, resultIntent)
 
@@ -147,54 +137,4 @@ class DetailWisataActivity : AppCompatActivity() {
             commit()
         }
     }
-
-
-//    private fun toggleLike() {
-//        token?.let { safeToken ->
-//            if (isLiked) {
-//                // Jika sudah di-like, lakukan unlike
-//                viewModel.unlikeWisata(safeToken, wisataId)
-//                Toast.makeText(this, "Batal menyukai wisata", Toast.LENGTH_SHORT).show()
-//            } else {
-//                // Jika belum di-like, lakukan like
-//                viewModel.likeWisata(safeToken, wisataId)
-//                Toast.makeText(this, "Wisata berhasil disukai", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//
-//        // Perbarui status Like di aplikasi
-//        isLiked = !isLiked
-//        updateLikeIcon()
-//
-//        // Simpan status Like di SharedPreferences
-//        sharedPreferences.edit().apply {
-//            putBoolean("LIKE_$wisataId", isLiked)
-//            commit()
-//        }
-//    }
-
-
-//    private fun toggleLike() {
-//        token?.let { safeToken ->
-//            if (isLiked) {
-//                // Jika sudah di-like, maka lakukan unlike
-//                viewModel.unlikeWisata(safeToken, wisataId)
-//            } else {
-//                // Jika belum di-like, maka lakukan like
-//                viewModel.likeWisata(safeToken, wisataId)
-//            }
-//        }
-//
-//        // Perbarui status Like di aplikasi
-//        isLiked = !isLiked
-//        updateLikeIcon()
-//
-//        // Simpan status Like di SharedPreferences
-//        sharedPreferences.edit().apply {
-//            putBoolean("LIKE_$wisataId", isLiked)
-//            commit()
-//        }
-//    }
-
-
 }

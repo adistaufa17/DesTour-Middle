@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ✅ Setup SharedPreferences & Token
         sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
         token = sharedPreferences.getString("user_token", null)
@@ -39,7 +38,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // ✅ Setup Adapter
         adapter = WisataAdapter(emptyList(), this) { wisataItem ->
             val isBookmarked = sharedPreferences.getBoolean("BOOKMARK_${wisataItem.id}", false)
             sharedPreferences.edit().putBoolean("BOOKMARK_${wisataItem.id}", !isBookmarked).apply()
@@ -49,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewWisata.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewWisata.adapter = adapter
 
-        // ✅ Listener tombol filter
         binding.btnOpenFilter.setOnClickListener {
             val bottomSheet = BottomSheetFilterWisata { selectedFilter ->
                 Timber.d("Filter dipilih: $selectedFilter")
@@ -59,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
-        // ✅ Pencarian Offline
         binding.buttonSearch.setOnClickListener {
             val query = binding.editTextSearch.text.toString().trim()
             if (query.isNotEmpty()) {
@@ -69,12 +65,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // ✅ Tombol ke halaman profil
         binding.btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
-        // ✅ Observer data wisata
         viewModel.wisataResponse.observe(this) { wisataList ->
             wisataList?.let {
                 Timber.d("Total data diterima: ${it.size}")
@@ -83,7 +77,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // ✅ Observer bookmark response
         viewModel.bookmarkResponse.observe(this) { response ->
             if (response?.status == "success") {
                 Toast.makeText(this, "Bookmark diperbarui!", Toast.LENGTH_SHORT).show()
@@ -95,14 +88,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // ✅ Load awal data
         viewModel.getWisata(token!!)
     }
 
-    // ✅ Filter yang sedang aktif
     private var currentFilter: String = "Semua"
 
-    // ✅ Result dari DetailWisataActivity
     val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {

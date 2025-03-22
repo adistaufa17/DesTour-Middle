@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">DesTour-Middle</string>
+    <string name="wisata_image">Wisata Image</string>
+    <string name="nama_wisata">Nama Wisata</string>
+    <string name="lokasi_wisata">Lokasi Wisata</string>
+    <string name="image_wisata">Image Wisata</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="deskripsi_singkat_tentang_tempat_wisata_ini">Deskripsi singkat tentang tempat wisata ini...</string>
+    <string name="like">Like</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="semua">Semua</string>
+    <string name="terapkan_filter">Terapkan Filter</string>
+    <string name="daftar">Daftar</string>
+    <string name="sudah_punya_akun_login_di_sini">Sudah punya akun? Login di sini</string>
+    <string name="register">Register</string>
+    <string name="buat_akun_baru_untuk_melanjutkan">Buat akun baru untuk melanjutkan</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="email">Email</string>
+    <string name="nomor_hp">Nomor HP</string>
+    <string name="password">Password</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="deskripsi_wisata">Deskripsi Wisata</string>
 
     <string-array name="filter_options">
         <item>All</item>

@@ -1,37 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:background="#FFFFFF"
+    tools:context=".ProfileActivity">
 
-    <TextView
-        android:id="@+id/textViewNama"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nama Lengkap"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/textViewEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/textViewNomorHp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nomor HP"
-        android:textSize="18sp"/>
-
-    <!-- Tambahkan tombol logout -->
-    <Button
-        android:id="@+id/buttonLogout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_marginTop="16dp"/>
-</LinearLayout>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Foto Profil -->
+        <ImageView
+            android:id="@+id/imageProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_like"
+            android:contentDescription="Foto Profil"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+            android:padding="16dp" />
+
+        <!-- Nama Lengkap -->
+        <TextView
+            android:id="@+id/textViewNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Pengguna"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:textColor="#212121" />
+
+        <!-- Email -->
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@example.com"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginTop="4dp" />
+
+        <!-- Nomor HP -->
+        <TextView
+            android:id="@+id/textViewNomorHp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+62 812-3456-7890"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginTop="4dp" />
+
+        <!-- Tombol Logout -->
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keluar"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="#F44336"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

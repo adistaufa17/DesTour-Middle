@@ -19,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // **Cek apakah pengguna sudah login sebelumnya**
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
 
@@ -29,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        // **Ketika tombol login ditekan**
         binding.buttonLogin.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
@@ -46,10 +44,9 @@ class LoginActivity : AppCompatActivity() {
                 if (it.status == "success") {
                     Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
 
-                    // **Simpan status login ke SharedPreferences**
                     val editor = sharedPreferences.edit()
-                    editor.putBoolean("IS_LOGGED_IN", true) // ✅ Menandai bahwa pengguna sudah login
-                    editor.putString("user_token", it.data?.token) // ✅ Menyimpan token
+                    editor.putBoolean("IS_LOGGED_IN", true)
+                    editor.putString("user_token", it.data?.token)
                     editor.apply()
 
                     // Pindah ke MainActivity

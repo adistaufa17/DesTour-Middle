@@ -91,7 +91,7 @@ class WisataAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<WisataItem>) {
-        fullData = newData  // ✅ Simpan data asli
+        fullData = newData
         wisataData = newData
         notifyDataSetChanged()
     }
