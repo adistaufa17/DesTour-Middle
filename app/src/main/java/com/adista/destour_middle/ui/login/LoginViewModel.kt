@@ -17,13 +17,17 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val apiService: ApiService
 ) : ViewModel() {
+
+    val email = MutableLiveData("")
+    val password = MutableLiveData("")
+
     private val _loginResponse = MutableLiveData<AuthResponse>()
     val loginResponse: LiveData<AuthResponse> = _loginResponse
 
-    fun loginUser(email: String, password: String) {
+    fun loginUser() {
         val request = LoginRequest(
-            email = email,
-            password = password
+            email = email.value ?: "".trim(),
+            password = password.value ?: "".trim()
         )
 
         apiService.login(request).enqueue(object : Callback<AuthResponse> {

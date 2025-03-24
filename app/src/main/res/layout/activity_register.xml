@@ -4,136 +4,187 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".destour1.di.activity.RegisterActivity">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.adista.destour_middle.ui.register.RegisterViewModel" />
+    </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:padding="24dp">
+        style="@style/LayoutScrollView">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:layout_height="wrap_content">
 
+            <!-- Judul Register -->
             <TextView
+                android:id="@+id/tv_register_title"
+                style="@style/TitleLoginRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Subjudul -->
             <TextView
+                android:id="@+id/tv_subtitle"
+                style="@style/SubTitleLoginRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:text="@string/buat_akun_baru_untuk_melanjutkan"
-                android:textColor="#546E7A"
-                android:textSize="14sp" />
+                app:layout_constraintTop_toBottomOf="@id/tv_register_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_5sdp" />
 
-            <!-- Nama Lengkap -->
+            <!-- Nama -->
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/til_nama"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="@dimen/_16sdp"
+                android:hint="@string/nama_lengkap"
+                app:startIconDrawable="@drawable/ic_person"
+                app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextName"
+                    android:id="@+id/et_name"
+                    style="@style/EditTextLoginRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/nama_lengkap"
-                    android:text=""
-                    android:textColorHint="#546E7A"
-                    tools:ignore="TextContrastCheck" />
+                    android:inputType="textPersonName"
+                    android:text="@={viewModel.nama}"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/til_email"
+                style="@style/EditTextLoginRegister"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="@dimen/_12sdp"
+                android:hint="@string/email"
+                app:startIconDrawable="@drawable/ic_email"
+                app:layout_constraintTop_toBottomOf="@id/til_nama"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextEmail"
+                    android:id="@+id/et_email"
+                    style="@style/EditTextLoginRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:text=""
-                    tools:ignore="TextContrastCheck" />
+                    android:text="@={viewModel.email}"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Nomor HP -->
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/til_hp"
+                style="@style/EditTextLoginRegister"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                app:layout_constraintTop_toBottomOf="@id/til_email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:hint="@string/nomor_hp"
+                app:startIconDrawable="@drawable/ic_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPhone"
+                    android:id="@+id/et_nomorHp"
+                    style="@style/EditTextLoginRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/nomor_hp"
                     android:inputType="phone"
-                    android:text=""
-                    tools:ignore="TextContrastCheck" />
+                    android:text="@={viewModel.nomorHp}"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/til_password"
+                style="@style/EditTextLoginRegister"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                app:layout_constraintTop_toBottomOf="@id/til_hp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:hint="@string/password"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/et_password"
+                    style="@style/EditTextLoginRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:text=""
-                    android:textColorHint="#546E7A"
-                    tools:ignore="TextContrastCheck" />
+                    android:text="@={viewModel.password}"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Konfirmasi Password -->
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/til_confirm_password"
+                style="@style/EditTextLoginRegister"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                app:layout_constraintTop_toBottomOf="@id/til_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:hint="@string/konfirmasi_password"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextConfirmPassword"
+                    android:id="@+id/et_confirmPassword"
+                    style="@style/EditTextLoginRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/konfirmasi_password"
                     android:inputType="textPassword"
-                    android:text=""
-                    tools:ignore="TextContrastCheck" />
+                    android:text="@={viewModel.confirmPassword}"
+                    tools:ignore="VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Button Register -->
-            <Button
-                android:id="@+id/buttonRegister"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_register"
+                style="@style/ButtonLoginRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:onClick="@{() -> viewModel.registerUser()}"
                 android:text="@string/daftar"
-                android:backgroundTint="@color/black"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="16dp"/>
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_confirm_password"
+                tools:ignore="TextContrastCheck,VisualLintButtonSize" />
 
             <!-- Link ke Login -->
             <TextView
-                android:id="@+id/tvLogin"
+                android:id="@+id/tv_login"
+                style="@style/SubTitleLoginRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:minHeight="48dp"
                 android:text="@string/sudah_punya_akun_login_di_sini"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/btn_register"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_16sdp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

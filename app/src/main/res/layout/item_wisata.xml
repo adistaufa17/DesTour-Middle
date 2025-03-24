@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginVertical="@dimen/_8sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardElevation="@dimen/_4sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,9 +15,9 @@
 
         <!-- Gambar Wisata -->
         <ImageView
-            android:id="@+id/imageViewWisata"
+            android:id="@+id/iv_wisata"
             android:layout_width="0dp"
-            android:layout_height="180dp"
+            android:layout_height="@dimen/_180sdp"
             android:contentDescription="@string/image_wisata"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
@@ -25,98 +26,91 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ImageContrastCheck" />
 
-        <!-- Container untuk Info Wisata -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Nama Wisata -->
+        <TextView
+            android:id="@+id/tv_nama_wisata"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:text="@string/nama_wisata"
+            android:textColor="#212121"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewWisata">
+            app:layout_constraintTop_toBottomOf="@id/iv_wisata" />
 
-            <!-- Nama & Lokasi -->
-            <LinearLayout
-                android:id="@+id/infoContainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@id/actionsContainer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <!-- Lokasi Wisata -->
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:drawablePadding="@dimen/_4sdp"
+            android:text="@string/lokasi"
+            android:textColor="#757575"
+            android:textSize="@dimen/_14ssp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:drawableStartCompat="@drawable/ic_location"
+            app:drawableTint="#757575"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_nama_wisata" />
 
-                <!-- Nama Wisata -->
-                <TextView
-                    android:id="@+id/textViewNamaWisata"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/nama_wisata"
-                    android:textColor="#212121"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end" />
+        <!-- Deskripsi Singkat -->
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:text="@string/deskripsi_singkat_tentang_tempat_wisata_ini"
+            android:textColor="#757575"
+            android:textSize="@dimen/_14ssp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_location"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <!-- Lokasi Wisata -->
-                <TextView
-                    android:id="@+id/textViewLokasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:drawablePadding="4dp"
-                    android:text="@string/lokasi"
-                    android:textColor="#757575"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    app:drawableStartCompat="@android:drawable/ic_menu_mylocation"
-                    app:drawableTint="#757575" />
+        <!-- Tombol Like -->
+        <ImageView
+            android:id="@+id/btn_like"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/like"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_like"
+            app:layout_constraintEnd_toStartOf="@id/btn_bookmark"
+            app:layout_constraintTop_toBottomOf="@id/iv_wisata"
+            tools:ignore="ImageContrastCheck" />
 
-                <!-- Deskripsi Singkat -->
-                <TextView
-                    android:id="@+id/textViewDeskripsi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/deskripsi_singkat_tentang_tempat_wisata_ini"
-                    android:textColor="#757575"
-                    android:textSize="14sp"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
-            </LinearLayout>
-
-            <!-- Container Tombol Aksi -->
-            <LinearLayout
-                android:id="@+id/actionsContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <!-- Tombol Like -->
-                <ImageView
-                    android:id="@+id/buttonLike"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_liked"
-                    android:contentDescription="@string/like" />
-
-                <!-- Tombol Bookmark -->
-                <ImageView
-                    android:id="@+id/buttonBookmark"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_bookmark"
-                    android:contentDescription="@string/bookmark" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Tombol Bookmark -->
+        <ImageView
+            android:id="@+id/btn_bookmark"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_bookmark"
+            android:contentDescription="@string/bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_wisata" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

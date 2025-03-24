@@ -38,25 +38,25 @@ class DetailWisataActivity : AppCompatActivity() {
         val deskripsi = intent.getStringExtra("WISATA_DESKRIPSI") ?: "Deskripsi tidak tersedia"
         val imageUrl = intent.getStringExtra("WISATA_IMAGE") ?: ""
 
-        binding.detailTitle.text = title
-        binding.detailLokasi.text = lokasi
-        binding.detailDeskripsi.text = deskripsi
+        binding.tvTitle.text = title
+        binding.tvLocation.text = lokasi
+        binding.tvDescription.text = deskripsi
 
         Glide.with(this)
             .load(imageUrl)
-            .into(binding.detailImage)
+            .into(binding.ivWisata)
 
         isBookmarked = sharedPreferences.getBoolean("BOOKMARK_$wisataId", false)
         updateBookmarkIcon()
 
-        binding.detailBookmark.setOnClickListener {
+        binding.btnBookmark.setOnClickListener {
             toggleBookmark()
         }
 
         isLiked = sharedPreferences.getBoolean("LIKE_$wisataId", false)
         updateLikeIcon()
 
-        binding.detailLike.setOnClickListener {
+        binding.btnLike.setOnClickListener {
             toggleLike()
         }
 
@@ -81,10 +81,10 @@ class DetailWisataActivity : AppCompatActivity() {
 
 
     private fun updateLikeIcon() {
-        binding.detailLike.setImageResource(if (isLiked) R.drawable.ic_like else R.drawable.ic_liked)
+        binding.btnLike.setIconResource(if (isLiked) R.drawable.ic_liked else R.drawable.ic_like)
     }
     private fun updateBookmarkIcon() {
-        binding.detailBookmark.setImageResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
+        binding.btnBookmark.setIconResource(if (isBookmarked) R.drawable.ic_bookmarked else R.drawable.ic_bookmark)
     }
 
     private fun toggleBookmark() {
@@ -93,7 +93,7 @@ class DetailWisataActivity : AppCompatActivity() {
         // Simpan status bookmark di SharedPreferences
         sharedPreferences.edit().apply {
             putBoolean("BOOKMARK_$wisataId", isBookmarked)
-            commit()
+            apply()
         }
 
         // Perbarui icon bookmark
@@ -135,7 +135,7 @@ class DetailWisataActivity : AppCompatActivity() {
 
         sharedPreferences.edit().apply {
             putBoolean("LIKE_$wisataId", isLiked)
-            commit()
+            apply()
         }
     }
 }

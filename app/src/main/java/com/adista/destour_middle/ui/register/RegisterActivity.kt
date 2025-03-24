@@ -22,17 +22,17 @@ class RegisterActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        binding.buttonRegister.setOnClickListener {
-            val nama = binding.editTextName.text.toString()
-            val email = binding.editTextEmail.text.toString()
-            val nomorHp = binding.editTextPhone.text.toString()
-            val password = binding.editTextPassword.text.toString()
-            val confirmPassword = binding.editTextConfirmPassword.text.toString()
+        binding.btnRegister.setOnClickListener {
+            val nama = binding.etName.text.toString()
+            val email = binding.etEmail.text.toString()
+            val nomorHp = binding.etNomorHp.text.toString()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
 
             if (nama.isNotEmpty() && email.isNotEmpty() && nomorHp.isNotEmpty() &&
                 password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    viewModel.registerUser(nama, email, nomorHp, password, confirmPassword)
+                    viewModel.registerUser()
                 } else {
                     Toast.makeText(this, "Password dan Konfirmasi Password tidak cocok!", Toast.LENGTH_SHORT).show()
                 }

@@ -10,60 +10,110 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/_16sdp">
 
-        <!-- Search Bar + Filter -->
-        <LinearLayout
-            android:id="@+id/layoutTopControls"
+        <!-- Header -->
+        <TextView
+            android:id="@+id/tv_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp"
+            android:text="@string/temukan_wisatamu"
+            android:textSize="@dimen/_20ssp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/_16sdp"/>
 
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:hint="Cari wisata..."
-                android:background="@android:drawable/edit_text"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:layout_marginEnd="8dp"/>
+        <!-- Search Container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/search_layout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_4sdp"
+            app:layout_constraintTop_toBottomOf="@id/tv_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_filter"
+            app:layout_constraintBottom_toTopOf="@id/rv_wisata"
+            android:layout_marginEnd="@dimen/_8sdp">
 
-            <Button
-                android:id="@+id/buttonSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:text="Cari"/>
-        </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/cari_destinasi"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_search"
+                    app:layout_constraintStart_toStartOf="@id/layout_search"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+                <ImageView
+                    android:id="@+id/btn_close"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:contentDescription="@string/button_close"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/et_search"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RedundantDescriptionCheck" />
+
+                <ImageView
+                    android:id="@+id/btn_search"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/button_search"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RedundantDescriptionCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- Filter Button -->
-        <Button
-            android:id="@+id/btnOpenFilter"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter"
-            app:layout_constraintTop_toBottomOf="@id/layoutTopControls"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp" />
+            android:layout_height="@dimen/_45sdp"
+            android:text="@string/filter"
+            app:icon="@drawable/ic_filter"
+            app:layout_constraintTop_toTopOf="@id/search_layout"
+            app:layout_constraintBottom_toBottomOf="@id/search_layout"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewWisata"
+            android:id="@+id/rv_wisata"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/btnOpenFilter"
+            android:paddingBottom="@dimen/_80sdp"
+            app:layout_constraintTop_toBottomOf="@id/search_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingBottom="80dp" />
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Floating Button ke Profile -->
@@ -71,10 +121,11 @@
         android:id="@+id/btn_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_liked"
-        android:contentDescription="Profil"
-        app:layout_anchor="@id/recyclerViewWisata" app:layout_anchorGravity="bottom|end"
-        android:layout_margin="16dp"
+        android:src="@drawable/ic_person"
+        android:contentDescription="@string/profil"
+        app:layout_anchor="@id/rv_wisata"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="@dimen/_16sdp"
         app:tint="@android:color/white"
-        app:backgroundTint="@color/purple" />
+        app:backgroundTint="@color/primary_color"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

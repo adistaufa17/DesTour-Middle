@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.adista.destour_middle.MainActivity
 import com.adista.destour_middle.databinding.ActivityLoginBinding
+import com.adista.destour_middle.ui.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,9 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
 
@@ -27,17 +31,6 @@ class LoginActivity : AppCompatActivity() {
             // Jika sudah login, langsung masuk ke MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }
-
-        binding.buttonLogin.setOnClickListener {
-            val email = binding.editTextEmail.text.toString()
-            val password = binding.editTextPassword.text.toString()
-
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                viewModel.loginUser(email, password)
-            } else {
-                Toast.makeText(this, "Harap isi semua data!", Toast.LENGTH_SHORT).show()
-            }
         }
 
         viewModel.loginResponse.observe(this) { response ->
@@ -57,6 +50,11 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Login gagal: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        binding.tvRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
         }
     }
 }

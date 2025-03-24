@@ -17,17 +17,25 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val apiService: ApiService
 ) : ViewModel() {
+
+    val nama = MutableLiveData("")
+    val email = MutableLiveData("")
+    val nomorHp = MutableLiveData("")
+    val password = MutableLiveData("")
+    val confirmPassword = MutableLiveData("")
+
     private val _registerResponse = MutableLiveData<AuthResponse?>()
     val registerResponse: LiveData<AuthResponse?> = _registerResponse
 
-    fun registerUser(nama: String, email: String, nomorHp: String, password: String, confirmPassword: String) {
+    fun registerUser() {
         val request = RegisterRequest(
-            nama_lengkap = nama,
-            email = email,
-            nomor_hp = nomorHp,
-            password = password,
-            confirm_password = confirmPassword
+            nama_lengkap = nama.value ?: "".trim(),
+            email = email.value ?: "".trim(),
+            nomor_hp = nomorHp.value ?: "".trim(),
+            password = password.value ?: "".trim(),
+            confirm_password = confirmPassword.value ?: "".trim()
         )
+
 
         apiService.register(request).enqueue(object : Callback<AuthResponse> {
             override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {

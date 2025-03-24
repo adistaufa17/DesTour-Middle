@@ -20,6 +20,26 @@
     <string name="password">Password</string>
     <string name="konfirmasi_password">Konfirmasi Password</string>
     <string name="deskripsi_wisata">Deskripsi Wisata</string>
+    <string name="logo_destour">Logo Destour</string>
+    <string name="login">Login</string>
+    <string name="masukkan_email_dan_password_anda">Masukkan email dan password Anda</string>
+    <string name="belum_punya_akun_daftar_di_sini">Belum punya akun? Daftar di sini</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="email_example_com">email@example.com</string>
+    <string name="phone_icon">Phone Icon</string>
+    <string name="_62_812_3456_7890">+62 812-3456-7890</string>
+    <string name="logout">Logout</string>
+    <string name="nama_pengguna">Nama Pengguna</string>
+    <string name="profile_pengguna">Profile Pengguna</string>
+    <string name="location_icon">Location Icon</string>
+    <string name="back_button">Back Button</string>
+    <string name="detail_wisata">Detail Wisata</string>
+    <string name="temukan_wisatamu">Temukan Wisatamu</string>
+    <string name="cari_destinasi">Cari destinasi...</string>
+    <string name="button_close">Button Close</string>
+    <string name="filter">Filter</string>
+    <string name="button_search">Button Search</string>
+    <string name="profil">Profil</string>
 
     <string-array name="filter_options">
         <item>All</item>

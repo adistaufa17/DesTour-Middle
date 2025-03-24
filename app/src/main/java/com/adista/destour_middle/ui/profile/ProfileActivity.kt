@@ -35,9 +35,9 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.profileResponse.observe(this) { response ->
             if (response?.status == "success") {
                 response.data?.let { profile ->
-                    binding.textViewNama.text = profile.namaLengkap
-                    binding.textViewEmail.text = profile.email
-                    binding.textViewNomorHp.text = profile.nomorHp
+                    binding.tvNama.text = profile.namaLengkap
+                    binding.tvEmail.text = profile.email
+                    binding.tvNomorHp.text = profile.nomorHp
                 } ?: run {
                     Toast.makeText(this, "Data profil tidak tersedia", Toast.LENGTH_SHORT).show()
                 }
@@ -59,7 +59,7 @@ class ProfileActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear() // Hapus semua data login
-        editor.commit() // Gunakan commit() untuk memastikan data dihapus segera
+        editor.apply() // Gunakan commit() untuk memastikan data dihapus segera
 
         Toast.makeText(this, "Anda telah logout", Toast.LENGTH_SHORT).show()
 
