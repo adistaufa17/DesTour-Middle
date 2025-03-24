@@ -22,13 +22,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/TvTitleProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_70sdp"
             android:text="@string/profile_pengguna"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -49,14 +46,9 @@
         <!-- Kartu Info Profil -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProfileInfo"
+            style="@style/CardProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_70sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="@dimen/_12sdp"
-            app:cardElevation="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerBackground">
@@ -69,12 +61,10 @@
                 <!-- Nama Lengkap -->
                 <TextView
                     android:id="@+id/tv_nama"
+                    style="@style/TextViewNamaProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nama_pengguna"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -104,12 +94,10 @@
 
                 <TextView
                     android:id="@+id/tv_email"
+                    style="@style/TextViewProfile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
                     android:text="@string/email_example_com"
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="@id/iconEmail"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iconEmail"
@@ -120,7 +108,6 @@
                     android:id="@+id/iconPhone"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:contentDescription="@string/phone_icon"
                     android:src="@drawable/ic_phone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -129,12 +116,10 @@
 
                 <TextView
                     android:id="@+id/tv_nomorHp"
+                    style="@style/TextViewProfile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
                     android:text="@string/_62_812_3456_7890"
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="@id/iconPhone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iconPhone"
@@ -146,19 +131,11 @@
         <!-- Tombol Logout -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogout"
+            style="@style/BtnLogout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_20sdp"
-            android:backgroundTint="@color/colorDanger"
-            android:paddingVertical="@dimen/_8sdp"
             android:text="@string/logout"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/_8sdp"
             app:icon="@drawable/ic_logout"
-            app:iconGravity="textStart"
-            app:iconTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

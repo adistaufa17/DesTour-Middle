@@ -22,16 +22,13 @@
             <!-- Logo -->
             <ImageView
                 android:id="@+id/img_logo"
+                style="@style/IvLogoLogin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
-                android:layout_marginBottom="@dimen/_24sdp"
-                android:padding="@dimen/_10sdp"
                 android:contentDescription="@string/logo_destour"
-                android:src="@drawable/logo_destour"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/bg_login_top_gradient"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
             <!-- Title -->

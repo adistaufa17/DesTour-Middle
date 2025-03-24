@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.adista.destour_middle.MainActivity
 import com.adista.destour_middle.R
 import com.adista.destour_middle.databinding.ActivityDetailWisataBinding
 import com.bumptech.glide.Glide
@@ -38,7 +39,7 @@ class DetailWisataActivity : AppCompatActivity() {
         val deskripsi = intent.getStringExtra("WISATA_DESKRIPSI") ?: "Deskripsi tidak tersedia"
         val imageUrl = intent.getStringExtra("WISATA_IMAGE") ?: ""
 
-        binding.tvTitle.text = title
+        binding.tvTitleWisata.text = title
         binding.tvLocation.text = lokasi
         binding.tvDescription.text = deskripsi
 
@@ -58,6 +59,10 @@ class DetailWisataActivity : AppCompatActivity() {
 
         binding.btnLike.setOnClickListener {
             toggleLike()
+        }
+
+        binding.btnBack.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         viewModel.bookmarkResponse.observe(this) { response ->
