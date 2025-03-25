@@ -10,9 +10,12 @@ data class WisataResponse(
 )
 
 data class WisataData(
-    @SerializedName("wisataList") val wisataList: List<WisataItem>
-) {
-}
+    @SerializedName("wisataList") val wisataList: List<WisataItem>,
+    @SerializedName("total") val total: Int,
+    @SerializedName("page") val page: Int,
+    @SerializedName("limit") val limit: Int,
+    @SerializedName("totalPages") val totalPages: Int
+)
 
 data class WisataItem(
     @SerializedName("id") val id: Int,
@@ -20,6 +23,7 @@ data class WisataItem(
     @SerializedName("title") val title: String,
     @SerializedName("lokasi") val lokasi: String,
     @SerializedName("deskripsi") val deskripsi: String,
+    @SerializedName("liked") val liked: Boolean = false,
     @SerializedName("is_bookmarked") val isBookmarked: Boolean = false
 
 )

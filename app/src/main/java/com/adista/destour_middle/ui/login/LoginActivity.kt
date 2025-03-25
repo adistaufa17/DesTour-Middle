@@ -4,52 +4,58 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.adista.destour_middle.MainActivity
+import com.adista.destour_middle.R
 import com.adista.destour_middle.databinding.ActivityLoginBinding
 import com.adista.destour_middle.ui.register.RegisterActivity
+import com.crocodic.core.api.ApiStatus
+import com.crocodic.core.base.activity.CoreActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
-    private val viewModel: LoginViewModel by viewModels()
+class LoginActivity : CoreActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+        // Check login status using SharedPreferences
+        val isLoggedIn = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+            .getBoolean("IS_LOGGED_IN", false)
 
         if (isLoggedIn) {
-            // Jika sudah login, langsung masuk ke MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
-        viewModel.loginResponse.observe(this) { response ->
-            response?.let {
-                if (it.status == "success") {
-                    Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
-
-                    val editor = sharedPreferences.edit()
-                    editor.putBoolean("IS_LOGGED_IN", true)
-                    editor.putString("user_token", it.data?.token)
-                    editor.apply()
-
-                    // Pindah ke MainActivity
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Login gagal: ${it.message}", Toast.LENGTH_SHORT).show()
+        // Observe API responses
+        lifecycleScope.launch {
+            viewModel.apiResponse.collect { response ->
+                when(response.status) {
+                    ApiStatus.LOADING -> loadingDialog.show()
+                    ApiStatus.SUCCESS -> {
+                        loadingDialog.dismiss()
+                        response.message?.let { Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show() }
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    }
+                    ApiStatus.ERROR -> {
+                        loadingDialog.dismiss()
+                        response.message?.let { Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show() }
+                    }
+                    else -> {}
                 }
             }
+        }
+
+        // Handle click events
+        binding.btnLogin.setOnClickListener {
+            // Use the non-suspending wrapper method
+            viewModel.onLoginClick()
         }
 
         binding.tvRegister.setOnClickListener {

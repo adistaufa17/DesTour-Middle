@@ -11,8 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adista.destour_middle.databinding.ActivityMainBinding
 import com.adista.destour_middle.ui.login.LoginActivity
@@ -20,14 +19,15 @@ import com.adista.destour_middle.ui.profile.ProfileActivity
 import com.adista.destour_middle.ui.wisata.BottomSheetFilterWisata
 import com.adista.destour_middle.ui.wisata.WisataAdapter
 import com.adista.destour_middle.ui.wisata.WisataViewModel
+import com.crocodic.core.api.ApiStatus
+import com.crocodic.core.base.activity.CoreActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : CoreActivity<ActivityMainBinding, WisataViewModel>(R.layout.activity_main) {
 
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: WisataViewModel by viewModels()
     private lateinit var adapter: WisataAdapter
     private lateinit var sharedPreferences: SharedPreferences
     private var token: String? = null
@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         // Inisialisasi SharedPreferences
         sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
@@ -61,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         // Setup RecyclerView
         binding.rvWisata.layoutManager = LinearLayoutManager(this)
         binding.rvWisata.adapter = adapter
+        binding.rvWisata.setHasFixedSize(true)
 
         // Setup Search Functionality
         setupSearchFunctionality()
@@ -80,28 +79,47 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
-        // Observer untuk response wisata
         viewModel.wisataResponse.observe(this) { wisataList ->
-            wisataList?.let {
-                Timber.d("Total data diterima: ${it.size}")
-                adapter.updateData(it)
+            Timber.d("wisataResponse observer triggered")
+            if (wisataList != null) {
+                Timber.d("Received ${wisataList.size} items in MainActivity")
+                adapter.updateData(wisataList)
                 adapter.setFilter(currentFilter, sharedPreferences)
+            } else {
+                Timber.e("Received null wisataList in MainActivity")
             }
         }
 
-        // Observer untuk bookmark response
-        viewModel.bookmarkResponse.observe(this) { response ->
-            if (response?.status == "success") {
-                Toast.makeText(this, "Bookmark diperbarui!", Toast.LENGTH_SHORT).show()
-                token?.let { viewModel.getWisata(it) }
-            } else {
-                val msg = if (response?.code == 409) "Wisata sudah dibookmark." else "Gagal memperbarui bookmark"
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        // Observe API responses
+        lifecycleScope.launch {
+            viewModel.apiResponse.collect { response ->
+                when(response.status) {
+                    ApiStatus.LOADING -> loadingDialog.show()
+                    ApiStatus.SUCCESS -> {
+                        loadingDialog.dismiss()
+                        response.message?.let {
+                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    ApiStatus.ERROR -> {
+                        loadingDialog.dismiss()
+                        response.message?.let {
+                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else -> {
+                        loadingDialog.dismiss()
+                    }
+                }
             }
         }
 
         // Ambil data wisata pertama kali
-        viewModel.getWisata(token!!)
+        token?.let {
+            lifecycleScope.launch {
+                viewModel.getWisata(it)
+            }
+        }
     }
 
     private fun setupSearchFunctionality() {
@@ -158,7 +176,9 @@ class MainActivity : AppCompatActivity() {
 
         // Kembalikan data ke kondisi awal
         token?.let {
-            viewModel.getWisata(it)
+            lifecycleScope.launch {
+                viewModel.getWisata(it)
+            }
         }
 
         // Sembunyikan keyboard
@@ -176,8 +196,10 @@ class MainActivity : AppCompatActivity() {
 
                 if (wisataId != -1) {
                     token?.let { safeToken ->
-                        viewModel.toggleBookmark(safeToken, wisataId, isBookmarked)
-                        viewModel.toggleLike(safeToken, wisataId, isLiked)
+                        lifecycleScope.launch {
+                            viewModel.toggleBookmark(safeToken, wisataId, isBookmarked)
+                            viewModel.toggleLike(safeToken, wisataId, isLiked)
+                        }
                     }
 
                     adapter.updateBookmarkStatus(wisataId, isBookmarked)

@@ -2,51 +2,55 @@ package com.adista.destour_middle.ui.wisata
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.adista.destour_middle.core.network.ApiResponse
 import com.adista.destour_middle.data.model.WisataItem
 import com.adista.destour_middle.data.model.WisataResponse
 import com.adista.destour_middle.core.network.ApiService
+import com.crocodic.core.api.ApiObserver
+import com.crocodic.core.api.ApiResponse
+import com.crocodic.core.base.viewmodel.CoreViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class WisataViewModel @Inject constructor(
     private val apiService: ApiService
-) : ViewModel() {
+) : CoreViewModel() {
+
     private val _wisataResponse = MutableLiveData<List<WisataItem>>()
     val wisataResponse: LiveData<List<WisataItem>> = _wisataResponse
-
-    private val _bookmarkResponse = MutableLiveData<ApiResponse>()
-    val bookmarkResponse: LiveData<ApiResponse> = _bookmarkResponse
-
-    private val _likeResponse = MutableLiveData<ApiResponse>()
-    val likeResponse: LiveData<ApiResponse> = _likeResponse
 
     private var allWisataList: List<WisataItem> = emptyList()
 
     fun getWisata(token: String) {
-        Timber.d("Getting wisata list with token: $token")
-        apiService.getListWisata(token = token).enqueue(object : Callback<WisataResponse> {
-            override fun onResponse(call: Call<WisataResponse>, response: Response<WisataResponse>) {
-                if (response.isSuccessful) {
-                    allWisataList = response.body()?.data?.wisataList ?: emptyList()
-                    _wisataResponse.value = allWisataList
-                    Timber.d("Wisata data retrieved: ${allWisataList.size} items")
-                } else {
-                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                    Timber.e("Error fetching wisata data: code=${response.code()}, body=$errorBody")
+        ApiObserver(
+            { apiService.getListWisata(token) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    try {
+                        val wisataResponse = Gson().fromJson(response.toString(), WisataResponse::class.java)
+                        Timber.d("Received wisataList with ${wisataResponse.data.wisataList.size} items")
+                        allWisataList = wisataResponse.data.wisataList
+                        _wisataResponse.postValue(allWisataList)
+                        _apiResponse.emit(ApiResponse().responseSuccess("Data berhasil dimuat"))
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error parsing wisata data")
+                        _apiResponse.emit(ApiResponse().responseError(e))
+                    }
+                }
+
+                override suspend fun onError(response: ApiResponse) {
+                    Timber.e("Error getting wisata data: ${response.message}")
+                    _apiResponse.emit(response)
                 }
             }
-
-            override fun onFailure(call: Call<WisataResponse>, t: Throwable) {
-                Timber.e(t, "Failure getting wisata data: ${t.message}")
-            }
-        })
+        )
     }
 
     fun searchWisataOffline(query: String) {
@@ -54,33 +58,89 @@ class WisataViewModel @Inject constructor(
         _wisataResponse.value = filteredList
     }
 
-    fun addBookmark(token: String, idWisata: Int) {
-        apiService.addBookmark(endpoint = "addBookmarks", token = token, idWisata = idWisata)
-            .enqueue(object : Callback<ApiResponse> {
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                    _bookmarkResponse.value = response.body()
+    suspend fun addBookmark(token: String, idWisata: Int) {
+        _apiResponse.emit(ApiResponse().responseLoading())
+
+        ApiObserver(
+            { apiService.addBookmark(endpoint = "addBookmarks", token = token, idWisata = idWisata) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    Timber.d("Bookmark added: $response")
+                    _apiResponse.emit(ApiResponse().responseSuccess("Bookmark berhasil ditambahkan", data = "bookmark_add"))
                 }
 
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    _bookmarkResponse.value = ApiResponse("failed", -1, "Gagal menambahkan bookmark: ${t.message}")
+                override suspend fun onError(response: ApiResponse) {
+                    Timber.e("Failed to add bookmark: ${response.message}")
+                    _apiResponse.emit(response)
                 }
-            })
+            }
+        )
     }
 
-    fun removeBookmark(token: String, idWisata: Int) {
-        apiService.removeBookmark(endpoint = "removeBookmarks", token = token, idWisata = idWisata)
-            .enqueue(object : Callback<ApiResponse> {
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                    _bookmarkResponse.value = response.body()
+    suspend fun removeBookmark(token: String, idWisata: Int) {
+        _apiResponse.emit(ApiResponse().responseLoading())
+
+        ApiObserver(
+            { apiService.removeBookmark(endpoint = "removeBookmarks", token = token, idWisata = idWisata) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    Timber.d("Bookmark removed: $response")
+                    _apiResponse.emit(ApiResponse().responseSuccess("Bookmark berhasil dihapus", data = "bookmark_remove"))
                 }
 
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    _bookmarkResponse.value = ApiResponse("failed", -1, "Gagal menghapus bookmark: ${t.message}")
+                override suspend fun onError(response: ApiResponse) {
+                    Timber.e("Failed to remove bookmark: ${response.message}")
+                    _apiResponse.emit(response)
                 }
-            })
+            }
+        )
     }
 
-    fun toggleBookmark(token: String, idWisata: Int, isCurrentlyBookmarked: Boolean) {
+    suspend fun likeWisata(token: String, idWisata: Int) {
+        _apiResponse.emit(ApiResponse().responseLoading())
+        Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
+
+        ApiObserver(
+            { apiService.likeWisata(token = token, idWisata = idWisata) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    Timber.d("LIKE BERHASIL: $response")
+                    _apiResponse.emit(ApiResponse().responseSuccess("Berhasil menyukai wisata", data = "like_add"))
+                }
+
+                override suspend fun onError(response: ApiResponse) {
+                    Timber.e("LIKE GAGAL: ${response.message}")
+                    _apiResponse.emit(response)
+                }
+            }
+        )
+    }
+
+    suspend fun unlikeWisata(token: String, idWisata: Int) {
+        _apiResponse.emit(ApiResponse().responseLoading())
+        Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
+
+        ApiObserver(
+            { apiService.unlikeWisata(token = token, idWisata = idWisata) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    Timber.d("UNLIKE BERHASIL: $response")
+                    _apiResponse.emit(ApiResponse().responseSuccess("Berhasil membatalkan suka", data = "like_remove"))
+                }
+
+                override suspend fun onError(response: ApiResponse) {
+                    Timber.e("UNLIKE GAGAL: ${response.message}")
+                    _apiResponse.emit(response)
+                }
+            }
+        )
+    }
+
+    suspend fun toggleBookmark(token: String, idWisata: Int, isCurrentlyBookmarked: Boolean) {
         if (isCurrentlyBookmarked) {
             removeBookmark(token, idWisata)
         } else {
@@ -88,52 +148,7 @@ class WisataViewModel @Inject constructor(
         }
     }
 
-    fun likeWisata(token: String, idWisata: Int) {
-        Timber.d("Mengirim permintaan LIKE untuk wisata: $idWisata")
-        apiService.likeWisata(token = token, idWisata = idWisata)
-            .enqueue(object : Callback<ApiResponse> {
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                    if (response.isSuccessful) {
-                        Timber.d("LIKE BERHASIL: ${response.body()?.message}")
-                        _likeResponse.value = response.body()
-                    } else if (response.code() == 409) { // Sudah disukai sebelumnya
-                        Timber.e("LIKE GAGAL: Wisata sudah disukai sebelumnya.")
-                        _likeResponse.value = ApiResponse("failed", 409, "Wisata sudah disukai sebelumnya.")
-                    } else {
-                        Timber.e("LIKE GAGAL: ${response.errorBody()?.string()}")
-                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan like.")
-                    }
-                }
-
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    Timber.e("LIKE ERROR: ${t.message}")
-                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan like: ${t.message}")
-                }
-            })
-    }
-
-    fun unlikeWisata(token: String, idWisata: Int) {
-        Timber.d("Mengirim permintaan UNLIKE untuk wisata: $idWisata")
-        apiService.unlikeWisata(token = token, idWisata = idWisata)
-            .enqueue(object : Callback<ApiResponse> {
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                    if (response.isSuccessful) {
-                        Timber.d("UNLIKE BERHASIL: ${response.body()?.message}")
-                        _likeResponse.value = response.body()
-                    } else {
-                        Timber.e("UNLIKE GAGAL: ${response.errorBody()?.string()}")
-                        _likeResponse.value = ApiResponse("failed", response.code(), "Gagal melakukan unlike.")
-                    }
-                }
-
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    Timber.e("UNLIKE ERROR: ${t.message}")
-                    _likeResponse.value = ApiResponse("failed", -1, "Gagal melakukan unlike: ${t.message}")
-                }
-            })
-    }
-
-    fun toggleLike(token: String, idWisata: Int, isCurrentlyLiked: Boolean) {
+    suspend fun toggleLike(token: String, idWisata: Int, isCurrentlyLiked: Boolean) {
         if (isCurrentlyLiked) {
             unlikeWisata(token, idWisata)
         } else {
@@ -141,5 +156,19 @@ class WisataViewModel @Inject constructor(
         }
     }
 
+    override fun apiRenewToken() {
+        // Not implemented for this project
+        // This would be used for token refresh logic
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiResponse = ApiResponse()
+            apiResponse.message = "Token tidak dapat diperbaharui"
+            _apiResponse.emit(apiResponse.responseError())
+        }
+    }
 
+    override fun apiLogout() {
+        // Implement if needed
+        // This would be used for logout logic
+        logoutSuccess()
+    }
 }

@@ -1,42 +1,48 @@
 package com.adista.destour_middle.ui.profile
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.adista.destour_middle.data.model.ProfileResponse
 import com.adista.destour_middle.core.network.ApiService
+import com.adista.destour_middle.data.model.ProfileResponse
+import com.crocodic.core.api.ApiObserver
+import com.crocodic.core.api.ApiResponse
+import com.crocodic.core.base.viewmodel.CoreViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val apiService: ApiService
-) : ViewModel() {
-    private val _profileResponse = MutableLiveData<ProfileResponse>()
-    val profileResponse: LiveData<ProfileResponse> = _profileResponse
+) : CoreViewModel() {
 
-    fun getProfile(token: String) {
-        apiService.getProfile(token = token).enqueue(object :
-            Callback<ProfileResponse> {
-            override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
-                if (response.isSuccessful) {
-                    _profileResponse.value = response.body()
-                    Log.d("Profile", "Success: ${response.body()}")
-                } else {
-                    Log.e("Profile", "Error: ${response.errorBody()?.string()}")
+    suspend fun getProfile(token: String) {
+        _apiResponse.emit(ApiResponse().responseLoading())
+
+        ApiObserver(
+            { apiService.getProfile(token = token) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    val profileResponse = Gson().fromJson(response.toString(), ProfileResponse::class.java)
+                    _apiResponse.emit(ApiResponse().responseSuccess(
+                        "Profil berhasil dimuat",
+                        data = profileResponse
+                    ))
+                }
+
+                override suspend fun onError(response: ApiResponse) {
+                    _apiResponse.emit(response)
                 }
             }
+        )
+    }
 
-            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
-                Log.e("Profile", "Failure: ${t.message}")
-                _profileResponse.value = ProfileResponse(
-                    status = "failed", code = 500, message = "Gagal memuat data.", data = null
-                )
-            }
-        })
+    override fun apiRenewToken() {
+        // Not implemented
+    }
+
+    override fun apiLogout() {
+        // Implementation for logout
+        logoutSuccess()
     }
 }

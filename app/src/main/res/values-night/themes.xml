@@ -178,5 +178,11 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:padding">@dimen/_6sdp</item>
     </style>
+    
+    <style name="BgBottomFilter">
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/_24sdp</item>
+        <item name="android:background">@color/card_background</item>
+    </style>
 
 </resources>

@@ -1,59 +1,33 @@
 package com.adista.destour_middle.ui.register
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.adista.destour_middle.MainActivity
+import com.adista.destour_middle.R
+import com.adista.destour_middle.data.model.AuthResponse
 import com.adista.destour_middle.databinding.ActivityRegisterBinding
 import com.adista.destour_middle.ui.login.LoginActivity
+import com.crocodic.core.api.ApiStatus
+import com.crocodic.core.base.activity.CoreActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
-    private val viewModel: RegisterViewModel by viewModels()
+class RegisterActivity : CoreActivity<ActivityRegisterBinding, RegisterViewModel>(R.layout.activity_register) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
-        setContentView(binding.root)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         binding.btnRegister.setOnClickListener {
-            val nama = binding.etName.text.toString()
-            val email = binding.etEmail.text.toString()
-            val nomorHp = binding.etNomorHp.text.toString()
-            val password = binding.etPassword.text.toString()
-            val confirmPassword = binding.etConfirmPassword.text.toString()
-
-            if (nama.isNotEmpty() && email.isNotEmpty() && nomorHp.isNotEmpty() &&
-                password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                if (password == confirmPassword) {
-                    viewModel.registerUser()
-                } else {
-                    Toast.makeText(this, "Password dan Konfirmasi Password tidak cocok!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Harap isi semua data!", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-
-        viewModel.registerResponse.observe(this) { response ->
-            response?.let {
-                if (it.status == "success") {
-                    Toast.makeText(this, "Registrasi berhasil!", Toast.LENGTH_SHORT).show()
-
-                    // Setelah sukses daftar, langsung pindah ke MainActivity
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Registrasi gagal: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
+            if (validateInputs()) {
+                // Use the non-suspending wrapper method
+                viewModel.onRegisterClick()
             }
         }
 
@@ -62,5 +36,58 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
+        // Observe API responses
+        lifecycleScope.launch {
+            viewModel.apiResponse.collect { response ->
+                when(response.status) {
+                    ApiStatus.LOADING -> loadingDialog.show()
+                    ApiStatus.SUCCESS -> {
+                        loadingDialog.dismiss()
+
+                        // Save login data
+                        val authResponse = response.dataAs<AuthResponse>()
+                        authResponse?.data?.token?.let { token ->
+                            getSharedPreferences("user_pref", Context.MODE_PRIVATE).edit().apply {
+                                putBoolean("IS_LOGGED_IN", true)
+                                putString("user_token", token)
+                                apply()
+                            }
+                        }
+
+                        Toast.makeText(this@RegisterActivity, response.message, Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+                        finish()
+                    }
+                    ApiStatus.ERROR -> {
+                        loadingDialog.dismiss()
+                        Toast.makeText(this@RegisterActivity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        loadingDialog.dismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun validateInputs(): Boolean {
+        val nama = binding.etName.text.toString()
+        val email = binding.etEmail.text.toString()
+        val nomorHp = binding.etNomorHp.text.toString()
+        val password = binding.etPassword.text.toString()
+        val confirmPassword = binding.etConfirmPassword.text.toString()
+
+        if (nama.isEmpty() || email.isEmpty() || nomorHp.isEmpty() ||
+            password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "Harap isi semua data!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (password != confirmPassword) {
+            Toast.makeText(this, "Password dan Konfirmasi Password tidak cocok!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 }

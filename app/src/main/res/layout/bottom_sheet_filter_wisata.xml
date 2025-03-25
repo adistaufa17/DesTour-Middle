@@ -2,11 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutBottomSheet"
+    style="@style/BgBottomFilter"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@android:color/white">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"

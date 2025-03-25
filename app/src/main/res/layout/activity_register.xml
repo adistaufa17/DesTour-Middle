@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".destour1.di.activity.RegisterActivity">
+    tools:context=".ui.register.RegisterActivity">
 
     <data>
         <variable
@@ -166,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:onClick="@{() -> viewModel.registerUser()}"
+                android:onClick="@{() -> viewModel.onRegisterClick()}"
                 android:text="@string/daftar"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"

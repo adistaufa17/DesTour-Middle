@@ -1,146 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".ui.profile.ProfileActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+<layout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        tools:context=".ui.profile.ProfileActivity">
 
-        <!-- Header Background dengan Gradient -->
-        <View
-            android:id="@+id/headerBackground"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_180sdp"
-            android:background="@drawable/profile_header_gradient"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            style="@style/TvTitleProfile"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/profile_pengguna"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="TextSizeCheck,TextContrastCheck" />
+            android:layout_height="wrap_content">
 
-        <!-- Foto Profil dengan Outline dan Efek Elevasi -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageProfile"
-            style="@style/ImageProfile"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            app:layout_constraintBottom_toBottomOf="@id/headerBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerBackground"
-            tools:ignore="ImageContrastCheck" />
+            <!-- Header Background dengan Gradient -->
+            <View
+                android:id="@+id/headerBackground"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_180sdp"
+                android:background="@drawable/profile_header_gradient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Kartu Info Profil -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardProfileInfo"
-            style="@style/CardProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerBackground">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                style="@style/TvTitleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_16sdp">
+                android:text="@string/profile_pengguna"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextSizeCheck,TextContrastCheck" />
 
-                <!-- Nama Lengkap -->
-                <TextView
-                    android:id="@+id/tv_nama"
-                    style="@style/TextViewNamaProfile"
-                    android:layout_width="wrap_content"
+            <!-- Foto Profil dengan Outline dan Efek Elevasi -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageProfile"
+                style="@style/ImageProfile"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                app:layout_constraintBottom_toBottomOf="@id/headerBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerBackground"
+                tools:ignore="ImageContrastCheck" />
+
+            <!-- Kartu Info Profil -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardProfileInfo"
+                style="@style/CardProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerBackground">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/nama_pengguna"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:padding="@dimen/_16sdp">
 
-                <!-- Divider -->
-                <View
-                    android:id="@+id/divider1"
-                    android:layout_width="336dp"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:background="@color/gradient_start"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_nama" />
+                    <!-- Nama Lengkap -->
+                    <TextView
+                        android:id="@+id/tv_nama"
+                        style="@style/TextViewNamaProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nama_pengguna"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Email dengan Icon -->
-                <ImageView
-                    android:id="@+id/iconEmail"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:contentDescription="@string/email_icon"
-                    android:src="@drawable/ic_email"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider1"
-                    tools:ignore="ImageContrastCheck" />
+                    <!-- Divider -->
+                    <View
+                        android:id="@+id/divider1"
+                        android:layout_width="336dp"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:background="@color/gradient_start"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_nama" />
 
-                <TextView
-                    android:id="@+id/tv_email"
-                    style="@style/TextViewProfile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/email_example_com"
-                    app:layout_constraintBottom_toBottomOf="@id/iconEmail"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iconEmail"
-                    app:layout_constraintTop_toTopOf="@id/iconEmail" />
+                    <!-- Email dengan Icon -->
+                    <ImageView
+                        android:id="@+id/iconEmail"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:contentDescription="@string/email_icon"
+                        android:src="@drawable/ic_email"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider1"
+                        tools:ignore="ImageContrastCheck" />
 
-                <!-- Nomor HP dengan Icon -->
-                <ImageView
-                    android:id="@+id/iconPhone"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:contentDescription="@string/phone_icon"
-                    android:src="@drawable/ic_phone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_email"
-                    tools:ignore="ImageContrastCheck" />
+                    <TextView
+                        android:id="@+id/tv_email"
+                        style="@style/TextViewProfile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email_example_com"
+                        app:layout_constraintBottom_toBottomOf="@id/iconEmail"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iconEmail"
+                        app:layout_constraintTop_toTopOf="@id/iconEmail" />
 
-                <TextView
-                    android:id="@+id/tv_nomorHp"
-                    style="@style/TextViewProfile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/_62_812_3456_7890"
-                    app:layout_constraintBottom_toBottomOf="@id/iconPhone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iconPhone"
-                    app:layout_constraintTop_toTopOf="@id/iconPhone" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+                    <!-- Nomor HP dengan Icon -->
+                    <ImageView
+                        android:id="@+id/iconPhone"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:contentDescription="@string/phone_icon"
+                        android:src="@drawable/ic_phone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_email"
+                        tools:ignore="ImageContrastCheck" />
+
+                    <TextView
+                        android:id="@+id/tv_nomorHp"
+                        style="@style/TextViewProfile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_62_812_3456_7890"
+                        app:layout_constraintBottom_toBottomOf="@id/iconPhone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iconPhone"
+                        app:layout_constraintTop_toTopOf="@id/iconPhone" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
 
-        <!-- Tombol Logout -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonLogout"
-            style="@style/BtnLogout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/logout"
-            app:icon="@drawable/ic_logout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardProfileInfo"
-            tools:ignore="VisualLintButtonSize" />
+            <!-- Tombol Logout -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonLogout"
+                style="@style/BtnLogout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                app:icon="@drawable/ic_logout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardProfileInfo"
+                tools:ignore="VisualLintButtonSize" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

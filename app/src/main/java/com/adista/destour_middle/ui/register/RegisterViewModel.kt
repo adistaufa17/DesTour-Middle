@@ -1,22 +1,23 @@
 package com.adista.destour_middle.ui.register
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.adista.destour_middle.data.model.AuthResponse
+import androidx.lifecycle.viewModelScope
 import com.adista.destour_middle.core.network.ApiService
+import com.adista.destour_middle.data.model.AuthResponse
 import com.adista.destour_middle.data.request.RegisterRequest
+import com.crocodic.core.api.ApiObserver
+import com.crocodic.core.api.ApiResponse
+import com.crocodic.core.base.viewmodel.CoreViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val apiService: ApiService
-) : ViewModel() {
+) : CoreViewModel() {
 
     val nama = MutableLiveData("")
     val email = MutableLiveData("")
@@ -24,10 +25,17 @@ class RegisterViewModel @Inject constructor(
     val password = MutableLiveData("")
     val confirmPassword = MutableLiveData("")
 
-    private val _registerResponse = MutableLiveData<AuthResponse?>()
-    val registerResponse: LiveData<AuthResponse?> = _registerResponse
+    // This is the function that will be called from XML
+    fun onRegisterClick() {
+        viewModelScope.launch {
+            doRegister()
+        }
+    }
 
-    fun registerUser() {
+    // This is the actual implementation
+    private suspend fun doRegister() {
+        _apiResponse.emit(ApiResponse().responseLoading())
+
         val request = RegisterRequest(
             nama_lengkap = nama.value ?: "".trim(),
             email = email.value ?: "".trim(),
@@ -36,21 +44,31 @@ class RegisterViewModel @Inject constructor(
             confirm_password = confirmPassword.value ?: "".trim()
         )
 
+        ApiObserver(
+            { apiService.register(request) },
+            false,
+            object : ApiObserver.ResponseListener {
+                override suspend fun onSuccess(response: JSONObject) {
+                    val authResponse = Gson().fromJson(response.toString(), AuthResponse::class.java)
+                    _apiResponse.emit(ApiResponse().responseSuccess(
+                        "Registrasi berhasil",
+                        data = authResponse
+                    ))
+                }
 
-        apiService.register(request).enqueue(object : Callback<AuthResponse> {
-            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
-                if (response.isSuccessful) {
-                    _registerResponse.value = response.body()
-                    Log.d("Register", "Success: ${response.body()}")
-                } else {
-                    Log.e("Register", "Error: ${response.errorBody()?.string()}")
+                override suspend fun onError(response: ApiResponse) {
+                    _apiResponse.emit(response)
                 }
             }
+        )
+    }
 
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                Log.e("Register", "Failure: ${t.message}")
-            }
-        })
+    override fun apiRenewToken() {
+        // Not implemented for registration
+    }
+
+    override fun apiLogout() {
+        // Not needed for registration
+        logoutSuccess()
     }
 }
-
