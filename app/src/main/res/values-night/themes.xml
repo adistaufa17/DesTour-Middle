@@ -73,6 +73,13 @@
             <item name="android:background">@color/blue_white_night</item>
         </style>
 
+    <style name="BtnBack">
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="android:layout_marginTop">@dimen/_20sdp</item>
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="color">@color/white</item>
+    </style>
+
         <style name="TvTitle">
             <item name="android:textSize">@dimen/_20ssp</item>
             <item name="android:layout_marginStart">@dimen/_16sdp</item>
@@ -145,7 +152,6 @@
         <item name="android:layout_marginEnd">@dimen/_4sdp</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:padding">@dimen/_6sdp</item>
-        <item name="android:tint">@color/gray_white</item>
     </style>
 
         <style name="BgBottomFilter">
@@ -153,6 +159,12 @@
             <item name="android:padding">@dimen/_20sdp</item>
             <item name="android:orientation">vertical</item>
         </style>
+
+    <style name="BtnFilter" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/gradient_start_night</item>
+        <item name="backgroundTint">@color/gradient_start_night</item>
+    </style>
 
     <style name="IvLogoLogin">
         <item name="android:layout_marginBottom">@dimen/_24sdp</item>
