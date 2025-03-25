@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:text="@={viewModel.confirmPassword}"
-                    tools:ignore="VisualLintTextFieldSize" />
+                    tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Button Register -->

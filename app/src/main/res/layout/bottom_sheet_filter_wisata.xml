@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutBottomSheet"
     style="@style/BgBottomFilter"
     android:layout_width="match_parent"
@@ -9,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Filter Wisata"
+        android:text="@string/filter_wisata"
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="12dp" />
@@ -43,5 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/terapkan_filter"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        tools:ignore="VisualLintButtonSize" />
 </LinearLayout>

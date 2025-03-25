@@ -79,10 +79,11 @@
             style="@style/BtnLikeBookmark"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
+            android:contentDescription="@string/button_like"
             android:src="@drawable/ic_like"
             app:layout_constraintEnd_toStartOf="@id/btn_bookmark"
             app:layout_constraintTop_toBottomOf="@id/iv_wisata"
-            tools:ignore="ImageContrastCheck" />
+            tools:ignore="ImageContrastCheck,RedundantDescriptionCheck" />
 
         <!-- Tombol Bookmark -->
         <ImageView
@@ -90,10 +91,11 @@
             style="@style/BtnLikeBookmark"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
-            android:src="@drawable/ic_bookmark"
             android:contentDescription="@string/bookmark"
+            android:src="@drawable/ic_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wisata" />
+            app:layout_constraintTop_toBottomOf="@id/iv_wisata"
+            tools:ignore="ImageContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -93,9 +93,10 @@
                 android:layout_height="@dimen/_45sdp"
                 android:text="@string/filter"
                 app:icon="@drawable/ic_filter"
-                app:layout_constraintTop_toTopOf="@id/search_layout"
                 app:layout_constraintBottom_toBottomOf="@id/search_layout"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/search_layout"
+                tools:ignore="TextContrastCheck" />
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView

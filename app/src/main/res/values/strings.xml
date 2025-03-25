@@ -40,6 +40,8 @@
     <string name="filter">Filter</string>
     <string name="button_search">Button Search</string>
     <string name="profil">Profil</string>
+    <string name="filter_wisata">Filter Wisata</string>
+    <string name="button_like">Button Like</string>
 
     <string-array name="filter_options">
         <item>All</item>
