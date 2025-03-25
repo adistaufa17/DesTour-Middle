@@ -15,9 +15,9 @@
             <!-- Header Background dengan Gradient -->
             <View
                 android:id="@+id/headerBackground"
+                style="@style/HeaderBg"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_180sdp"
-                android:background="@drawable/profile_header_gradient"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

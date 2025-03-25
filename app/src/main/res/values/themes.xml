@@ -1,11 +1,43 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.DesTourMiddle" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorSecondaryVariant">@color/accent_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/primary_dark</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background_color</item>
+        <item name="colorSurface">@color/card_background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+
+        <!-- Specific UI components -->
+        <item name="materialButtonStyle">@style/ButtonLoginRegister</item>
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="Theme.DesTourMiddle" parent="Base.Theme.DesTourMiddle" />
+
+    <!-- CardView style adjustments -->
+    <style name="CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardElevation">@dimen/_4sdp</item>
+        <item name="cardCornerRadius">@dimen/_8sdp</item>
+    </style>
 
     <style name="TitleLoginRegister">
         <item name="android:layout_marginTop">@dimen/_20sdp</item>
@@ -94,8 +126,8 @@
 
     <style name="LineDivider">
         <item name="android:layout_marginVertical">@dimen/_16sdp</item>
-        <item name="background">@color/gray</item>
-        <item name="color">@color/gray</item>
+        <item name="background">@color/divider_color</item>
+        <item name="color">@color/colorDivider</item>
     </style>
 
     <style name="TvTitleDesc">
@@ -115,11 +147,31 @@
     <style name="CustomBookmarkButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_marginTop">@dimen/_24sdp</item>
         <item name="android:layout_marginEnd">@dimen/_16sdp</item>
+        <item name="android:background">@color/green_white</item>
+        <item name="backgroundTint">@color/btn_detail_background</item>
+        <item name="strokeColor">@color/btn_detail_stroke</item>
+        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="iconTint">@color/bookmark_color</item>
+        <item name="rippleColor">@color/bookmark_color</item>
     </style>
 
     <style name="CustomBtnLike" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="icon">@drawable/ic_like</item>
         <item name="iconTint">@color/like_color</item>
+        <item name="android:background">@color/green_white</item>
+        <item name="background">@color/gray_white</item>
+        <item name="backgroundTint">@color/btn_detail_background</item>
+        <item name="strokeColor">@color/btn_detail_stroke</item>
+        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="rippleColor">@color/like_color</item>
+    </style>
+
+    <style name="BtnLikeBookmark">
+        <item name="android:layout_marginTop">@dimen/_8sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_4sdp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">@dimen/_6sdp</item>
+        <item name="android:tint">@color/gray_white</item>
     </style>
 
     <style name="IvLogoLogin">
@@ -210,11 +262,14 @@
         <item name="iconTint">@color/white</item>
     </style>
 
-    <style name="BtnLikeBookmark">
-        <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_4sdp</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:padding">@dimen/_6sdp</item>
+    <style name="BgBottomFilter">
+        <item name="android:background">@color/card_background</item>
+        <item name="android:padding">@dimen/_20sdp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="HeaderBg">
+        <item name="android:background">@drawable/profile_header_gradient</item>
     </style>
 
 </resources>

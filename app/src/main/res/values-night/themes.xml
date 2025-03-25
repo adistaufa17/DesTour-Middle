@@ -1,188 +1,218 @@
 <resources >
     <!-- Base application theme. -->
     <style name="Base.Theme.DesTourMiddle" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primary_night</item>
+        <item name="colorPrimaryVariant">@color/primary_dark_night</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/accent_color_night</item>
+        <item name="colorSecondaryVariant">@color/accent_color_night</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/black</item>
+
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background_color_night</item>
+        <item name="colorSurface">@color/card_background_night</item>
+        <item name="colorOnSurface">@color/text_primary_night</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary_night</item>
+        <item name="android:textColorSecondary">@color/text_secondary_night</item>
+        <item name="android:textColorHint">@color/text_hint_night</item>
+
+        <!-- Specific UI components -->
+        <item name="materialButtonStyle">@style/ButtonLoginRegister.Night</item>
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+        <item name="cardViewStyle">@style/CardView.Night</item>
     </style>
 
-    <style name="TitleLoginRegister">
-        <item name="android:layout_marginTop">@dimen/_20sdp</item>
-        <item name="android:textSize"> @dimen/_24sdp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/white</item>
+    <style name="ButtonLoginRegister.Night" parent="ButtonLoginRegister">
+        <item name="backgroundTint">@color/gradient_middle_night</item>
     </style>
 
-    <style name="SubTitleLoginRegister">
-        <item name="android:layout_marginTop">@dimen/_4sdp</item>
-        <item name="android:layout_marginBottom">@dimen/_12sdp</item>
-        <item name="android:textColor">@color/gray_white</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-    </style>
-
-    <style name="LayoutScrollView">
-        <item name="background">@color/black</item>
-        <item name="android:padding">@dimen/_24sdp</item>
-    </style>
-
-    <style name="EditTextLoginRegister">
-        <item name="color">@color/white</item>
-    </style>
-
-    <style name="ButtonLoginRegister">
-        <item name="android:backgroundTint">@color/gradient_middle</item>
-        <item name="android:layout_marginTop">@dimen/_24sdp</item>
-    </style>
-
-    <style name="BgWisata">
-        <item name="android:background">@color/blue_black</item>
-    </style>
-    
-    <style name="BtnBack">
-        <item name="android:layout_marginStart">@dimen/_20sdp</item>
-        <item name="android:layout_marginTop">@dimen/_20sdp</item>
-        <item name="android:src">@drawable/ic_back</item>
-    </style>
-
-    <style name="TvTitle">
-        <item name="android:textSize">@dimen/_20ssp</item>
-        <item name="android:layout_marginStart">@dimen/_16sdp</item>
-        <item name="android:layout_marginTop">@dimen/_20sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_20sdp</item>
-    </style>
-
-    <style name="CvImage">
-        <item name="android:layout_marginHorizontal">@dimen/_16sdp</item>
-        <item name="android:layout_marginTop">@dimen/_16sdp</item>
-        <item name="cardCornerRadius">@dimen/_8sdp</item>
+    <style name="CardView.Night" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_background_night</item>
         <item name="cardElevation">@dimen/_4sdp</item>
+        <item name="cardCornerRadius">@dimen/_8sdp</item>
     </style>
 
-    <style name="TvTitleWisata">
-        <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textSize">@dimen/_18ssp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+        <style name="TitleLoginRegister">
+            <item name="android:layout_marginTop">@dimen/_20sdp</item>
+            <item name="android:textSize">@dimen/_24sdp</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+        </style>
 
-    <style name="IcLocation">
-        <item name="tint">@color/accent_color</item>
-        <item name="android:layout_marginTop">@dimen/_4sdp</item>
-    </style>
+        <style name="SubTitleLoginRegister">
+            <item name="android:layout_marginTop">@dimen/_4sdp</item>
+            <item name="android:layout_marginBottom">@dimen/_12sdp</item>
+            <item name="android:textColor">@color/text_secondary_night</item>
+            <item name="android:textSize">@dimen/_14ssp</item>
+        </style>
 
-    <style name="TvLocation">
-        <item name="layout_goneMarginStart">@dimen/_8sdp</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-    </style>
+        <style name="LayoutScrollView">
+            <item name="background">@color/background_color_night</item>
+            <item name="android:padding">@dimen/_24sdp</item>
+        </style>
 
-    <style name="LineDivider">
-        <item name="android:layout_marginVertical">@dimen/_16sdp</item>
-        <item name="background">@color/gray</item>
-        <item name="color">@color/gray</item>
-    </style>
+        <style name="EditTextLoginRegister">
+            <item name="color">@color/text_primary_night</item>
+        </style>
 
-    <style name="TvTitleDesc">
-        <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textSize">@dimen/_16ssp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+        <style name="ButtonLoginRegister">
+            <item name="android:backgroundTint">@color/gradient_middle_night</item>
+            <item name="android:layout_marginTop">@dimen/_24sdp</item>
+            <item name="android:textColor">@color/white</item>
+        </style>
 
-    <style name="TvDescription">
-        <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:lineSpacingExtra">@dimen/_4ssp</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-    </style>
+        <style name="BgWisata">
+            <item name="android:background">@color/blue_white_night</item>
+        </style>
+
+        <style name="TvTitle">
+            <item name="android:textSize">@dimen/_20ssp</item>
+            <item name="android:layout_marginStart">@dimen/_16sdp</item>
+            <item name="android:layout_marginTop">@dimen/_20sdp</item>
+            <item name="android:layout_marginEnd">@dimen/_20sdp</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+        </style>
+
+        <style name="CvImage">
+            <item name="android:layout_marginHorizontal">@dimen/_16sdp</item>
+            <item name="android:layout_marginTop">@dimen/_16sdp</item>
+            <item name="cardCornerRadius">@dimen/_8sdp</item>
+            <item name="cardElevation">@dimen/_4sdp</item>
+            <item name="cardBackgroundColor">@color/card_background_night</item>
+        </style>
+
+        <style name="TvTitleWisata">
+            <item name="android:textColor">@color/colorPrimaryText_night</item>
+            <item name="android:textSize">@dimen/_18ssp</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="TvLocation">
+            <item name="layout_goneMarginStart">@dimen/_8sdp</item>
+            <item name="android:textColor">@color/text_secondary_night</item>
+            <item name="android:textSize">@dimen/_14ssp</item>
+        </style>
+
+        <style name="LineDivider">
+            <item name="android:layout_marginVertical">@dimen/_16sdp</item>
+            <item name="background">@color/divider_color_night</item>
+            <item name="color">@color/colorDivider_night</item>
+        </style>
+
+        <style name="TvTitleDesc">
+            <item name="android:layout_marginTop">@dimen/_8sdp</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+            <item name="android:textSize">@dimen/_16ssp</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="TvDescription">
+            <item name="android:layout_marginTop">@dimen/_8sdp</item>
+            <item name="android:lineSpacingExtra">@dimen/_4ssp</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+            <item name="android:textSize">@dimen/_14ssp</item>
+        </style>
 
     <style name="CustomBookmarkButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_marginTop">@dimen/_24sdp</item>
         <item name="android:layout_marginEnd">@dimen/_16sdp</item>
-        <item name="icon">@drawable/ic_bookmark</item>
+        <item name="backgroundTint">@color/btn_detail_background</item>
+        <item name="strokeColor">@color/btn_detail_stroke</item>
+        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="iconTint">@color/bookmark_color</item>
+        <item name="rippleColor">@color/bookmark_color</item>
     </style>
 
     <style name="CustomBtnLike" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="icon">@drawable/ic_like</item>
         <item name="iconTint">@color/like_color</item>
-    </style>
-
-    <style name="IvLogoLogin">
-        <item name="android:layout_marginBottom">@dimen/_24sdp</item>
-        <item name="android:padding">@dimen/_10sdp</item>
-        <item name="android:background">@drawable/bg_login_top_gradient</item>
-        <item name="android:src">@drawable/logo_destour</item>
-    </style>
-
-    <style name="TvTitleMain">
-        <item name="android:textSize">@dimen/_20ssp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:layout_marginBottom">@dimen/_16sdp</item>
-    </style>
-
-    <style name="SearchLayout">
-        <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:layout_marginBottom">@dimen/_8sdp</item>
-        <item name="cardCornerRadius">@dimen/_16sdp</item>
-        <item name="cardElevation">@dimen/_4sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_8sdp</item>
-    </style>
-
-    <style name="EditTextSearch">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:hint">@string/cari_destinasi</item>
-        <item name="android:importantForAutofill">no</item>
-        <item name="android:inputType">text</item>
-        <item name="android:paddingStart">@dimen/_12sdp</item>
-        <item name="android:paddingEnd">@dimen/_12sdp</item>
-        <item name="singleLine">true</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-    </style>
-
-    <style name="ButtonSearch">
-        <item name="android:layout_marginEnd">@dimen/_8sdp</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:padding">@dimen/_8sdp</item>
-    </style>
-
-    <style name="ButtonProfile">
-        <item name="android:layout_margin">@dimen/_16sdp</item>
-        <item name="backgroundTint">@color/primary_color</item>
-        <item name="tint">@color/white</item>
-        <item name="layout_anchorGravity">bottom|end</item>
-        <item name="layout_anchor">@id/rv_wisata</item>
-        <item name="android:src">@drawable/ic_person</item>
-    </style>
-
-    <style name="TvTitleProfile">
-        <item name="android:layout_margin">@dimen/_70sdp</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/_20sdp</item>
-    </style>
-
-    <style name="BtnLogout">
-        <item name="android:layout_margin">@dimen/_20sdp</item>
-        <item name="backgroundTint">@color/colorDanger</item>
-        <item name="android:paddingVertical">@dimen/_8sdp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="cornerRadius">@dimen/_8sdp</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/btn_detail_background</item>
+        <item name="strokeColor">@color/btn_detail_stroke</item>
+        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="rippleColor">@color/like_color</item>
     </style>
 
     <style name="BtnLikeBookmark">
         <item name="android:layout_marginTop">@dimen/_8sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_16sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_4sdp</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:padding">@dimen/_6sdp</item>
-    </style>
-    
-    <style name="BgBottomFilter">
-        <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/_24sdp</item>
-        <item name="android:background">@color/card_background</item>
+        <item name="android:tint">@color/gray_white</item>
     </style>
 
-</resources>
+        <style name="BgBottomFilter">
+            <item name="android:background">@color/card_background_night</item>
+            <item name="android:padding">@dimen/_20sdp</item>
+            <item name="android:orientation">vertical</item>
+        </style>
+
+    <style name="IvLogoLogin">
+        <item name="android:layout_marginBottom">@dimen/_24sdp</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:background">@drawable/bg_login_top_gradient_night</item>
+        <item name="android:src">@drawable/logo_destour</item>
+    </style>
+
+        <style name="TvTitleMain">
+            <item name="android:textSize">@dimen/_20ssp</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+            <item name="android:layout_marginBottom">@dimen/_16sdp</item>
+        </style>
+
+        <style name="SearchLayout">
+            <item name="android:layout_marginTop">@dimen/_8sdp</item>
+            <item name="android:layout_marginBottom">@dimen/_8sdp</item>
+            <item name="cardCornerRadius">@dimen/_16sdp</item>
+            <item name="cardElevation">@dimen/_4sdp</item>
+            <item name="android:layout_marginEnd">@dimen/_8sdp</item>
+            <item name="cardBackgroundColor">@color/card_background_night</item>
+        </style>
+
+        <style name="EditTextSearch">
+            <item name="android:background">@android:color/transparent</item>
+            <item name="android:hint">@string/cari_destinasi</item>
+            <item name="android:importantForAutofill">no</item>
+            <item name="android:inputType">text</item>
+            <item name="android:paddingStart">@dimen/_12sdp</item>
+            <item name="android:paddingEnd">@dimen/_12sdp</item>
+            <item name="singleLine">true</item>
+            <item name="android:textSize">@dimen/_14ssp</item>
+            <item name="android:textColor">@color/text_primary_night</item>
+            <item name="android:textColorHint">@color/text_hint_night</item>
+        </style>
+
+        <style name="CardProfile">
+            <item name="android:layout_marginStart">@dimen/_16sdp</item>
+            <item name="android:layout_marginTop">@dimen/_70sdp</item>
+            <item name="android:layout_marginEnd">@dimen/_16sdp</item>
+            <item name="cardBackgroundColor">@color/card_background_night</item>
+            <item name="cardCornerRadius">@dimen/_12sdp</item>
+            <item name="cardElevation">@dimen/_4sdp</item>
+        </style>
+
+        <style name="TextViewNamaProfile">
+            <item name="android:textColor">@color/colorPrimaryText_night</item>
+            <item name="android:textSize">@dimen/_16ssp</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+
+        <style name="TextViewProfile">
+            <item name="android:layout_marginStart">@dimen/_12sdp</item>
+            <item name="android:layout_marginTop">@dimen/_4sdp</item>
+            <item name="android:textColor">@color/colorSecondaryText_night</item>
+            <item name="android:textSize">@dimen/_14ssp</item>
+        </style>
+
+    <style name="HeaderBg">
+        <item name="android:background">@drawable/profile_header_gradient_night</item>
+    </style>
+    </resources>
