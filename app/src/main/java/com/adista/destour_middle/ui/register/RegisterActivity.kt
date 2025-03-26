@@ -26,7 +26,6 @@ class RegisterActivity : CoreActivity<ActivityRegisterBinding, RegisterViewModel
 
         binding.btnRegister.setOnClickListener {
             if (validateInputs()) {
-                // Use the non-suspending wrapper method
                 viewModel.onRegisterClick()
             }
         }
@@ -36,7 +35,6 @@ class RegisterActivity : CoreActivity<ActivityRegisterBinding, RegisterViewModel
             finish()
         }
 
-        // Observe API responses
         lifecycleScope.launch {
             viewModel.apiResponse.collect { response ->
                 when(response.status) {
@@ -44,7 +42,6 @@ class RegisterActivity : CoreActivity<ActivityRegisterBinding, RegisterViewModel
                     ApiStatus.SUCCESS -> {
                         loadingDialog.dismiss()
 
-                        // Save login data
                         val authResponse = response.dataAs<AuthResponse>()
                         authResponse?.data?.token?.let { token ->
                             getSharedPreferences("user_pref", Context.MODE_PRIVATE).edit().apply {

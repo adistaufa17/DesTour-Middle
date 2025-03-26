@@ -22,14 +22,12 @@ class LoginViewModel @Inject constructor(
     val email = MutableLiveData("")
     val password = MutableLiveData("")
 
-    // This is the function that will be called from XML
     fun onLoginClick() {
         viewModelScope.launch {
             doLogin()
         }
     }
 
-    // This is the actual implementation
     private suspend fun doLogin() {
         _apiResponse.emit(ApiResponse().responseLoading())
 
@@ -61,7 +59,6 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun apiLogout() {
-        // Implementation for logout
         logoutSuccess()
     }
 }

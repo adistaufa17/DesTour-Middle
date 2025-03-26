@@ -37,12 +37,10 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    override fun apiRenewToken() {
-        // Not implemented
+    override fun apiRenewToken(){
     }
 
     override fun apiLogout() {
-        // Implementation for logout
         logoutSuccess()
     }
 }

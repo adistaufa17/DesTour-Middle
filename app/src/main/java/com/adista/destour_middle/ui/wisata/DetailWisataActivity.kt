@@ -27,18 +27,15 @@ class DetailWisataActivity : CoreActivity<ActivityDetailWisataBinding, WisataVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         token = sharedPreferences.getString("user_token", null)
 
-        // Retrieve data from intent
         wisataId = intent.getIntExtra("WISATA_ID", 0)
         val title = intent.getStringExtra("WISATA_TITLE") ?: "Nama Wisata"
         val lokasi = intent.getStringExtra("WISATA_LOKASI") ?: "Lokasi Tidak Diketahui"
         val deskripsi = intent.getStringExtra("WISATA_DESKRIPSI") ?: "Deskripsi tidak tersedia"
         val imageUrl = intent.getStringExtra("WISATA_IMAGE") ?: ""
 
-        // Set UI components
         binding.tvTitleWisata.text = title
         binding.tvLocation.text = lokasi
         binding.tvDescription.text = deskripsi
@@ -47,14 +44,12 @@ class DetailWisataActivity : CoreActivity<ActivityDetailWisataBinding, WisataVie
             .load(imageUrl)
             .into(binding.ivWisata)
 
-        // Initialize bookmark and like status from SharedPreferences
         isBookmarked = sharedPreferences.getBoolean("BOOKMARK_$wisataId", false)
         updateBookmarkIcon()
 
         isLiked = sharedPreferences.getBoolean("LIKE_$wisataId", false)
         updateLikeIcon()
 
-        // Setup click listeners
         binding.btnBookmark.setOnClickListener {
             toggleBookmark()
         }
@@ -64,10 +59,9 @@ class DetailWisataActivity : CoreActivity<ActivityDetailWisataBinding, WisataVie
         }
 
         binding.btnBack.setOnClickListener {
-            finish() // Use finish instead of starting a new activity
+            finish()
         }
 
-        // Observe API responses
         lifecycleScope.launch {
             viewModel.apiResponse.collect { response ->
                 when (response.status) {
@@ -114,7 +108,6 @@ class DetailWisataActivity : CoreActivity<ActivityDetailWisataBinding, WisataVie
             apply()
         }
 
-        // Perbarui icon bookmark
         updateBookmarkIcon()
 
         // Gunakan API untuk update bookmark

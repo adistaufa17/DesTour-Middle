@@ -123,12 +123,10 @@ class MainActivity : CoreActivity<ActivityMainBinding, WisataViewModel>(R.layout
     }
 
     private fun setupSearchFunctionality() {
-        // Listener untuk tombol search
         binding.btnSearch.setOnClickListener {
             performSearch()
         }
 
-        // Listener untuk enter di keyboard
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch()
@@ -136,17 +134,14 @@ class MainActivity : CoreActivity<ActivityMainBinding, WisataViewModel>(R.layout
             } else false
         }
 
-        // Listener untuk tombol close/clear
         binding.btnClose.setOnClickListener {
             resetSearch()
         }
 
-        // Tambahkan listener untuk perubahan teks
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Sembunyikan tombol close jika search kosong
                 binding.btnClose.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
             }
 
@@ -157,36 +152,29 @@ class MainActivity : CoreActivity<ActivityMainBinding, WisataViewModel>(R.layout
     private fun performSearch() {
         val query = binding.etSearch.text.toString().trim()
 
-        // Sembunyikan keyboard
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
 
         if (query.isNotEmpty()) {
-            // Lakukan pencarian
             viewModel.searchWisataOffline(query)
         } else {
-            // Tampilkan pesan jika query kosong
             Toast.makeText(this, "Masukkan kata kunci pencarian!", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun resetSearch() {
-        // Bersihkan text pencarian
         binding.etSearch.text.clear()
 
-        // Kembalikan data ke kondisi awal
         token?.let {
             lifecycleScope.launch {
                 viewModel.getWisata(it)
             }
         }
 
-        // Sembunyikan keyboard
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
     }
 
-    // Result Launcher untuk handling result dari aktivitas lain
     val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {

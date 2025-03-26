@@ -157,8 +157,6 @@ class WisataViewModel @Inject constructor(
     }
 
     override fun apiRenewToken() {
-        // Not implemented for this project
-        // This would be used for token refresh logic
         CoroutineScope(Dispatchers.IO).launch {
             val apiResponse = ApiResponse()
             apiResponse.message = "Token tidak dapat diperbaharui"
@@ -167,8 +165,6 @@ class WisataViewModel @Inject constructor(
     }
 
     override fun apiLogout() {
-        // Implement if needed
-        // This would be used for logout logic
         logoutSuccess()
     }
 }

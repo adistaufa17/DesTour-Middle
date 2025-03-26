@@ -32,7 +32,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TextSizeCheck,TextContrastCheck" />
 
-            <!-- Foto Profil dengan Outline dan Efek Elevasi -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageProfile"
                 style="@style/ImageProfile"

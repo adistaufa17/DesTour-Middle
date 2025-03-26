@@ -25,14 +25,12 @@ class RegisterViewModel @Inject constructor(
     val password = MutableLiveData("")
     val confirmPassword = MutableLiveData("")
 
-    // This is the function that will be called from XML
     fun onRegisterClick() {
         viewModelScope.launch {
             doRegister()
         }
     }
 
-    // This is the actual implementation
     private suspend fun doRegister() {
         _apiResponse.emit(ApiResponse().responseLoading())
 
@@ -64,11 +62,9 @@ class RegisterViewModel @Inject constructor(
     }
 
     override fun apiRenewToken() {
-        // Not implemented for registration
     }
 
     override fun apiLogout() {
-        // Not needed for registration
         logoutSuccess()
     }
 }

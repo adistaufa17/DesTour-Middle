@@ -20,8 +20,7 @@ class ProfileActivity : CoreActivity<ActivityProfileBinding, ProfileViewModel>(R
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set lifecycle owner - this is required for data binding
-        binding.lifecycleOwner = this  // Make sure ActivityProfileBinding has lifecycleOwner property
+        binding.lifecycleOwner = this
 
         val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
@@ -37,12 +36,10 @@ class ProfileActivity : CoreActivity<ActivityProfileBinding, ProfileViewModel>(R
             finish()
         }
 
-        // Tambahkan aksi untuk tombol logout
         binding.buttonLogout.setOnClickListener {
             logoutUser()
         }
 
-        // Observe API responses
         lifecycleScope.launch {
             viewModel.apiResponse.collect { response ->
                 when(response.status) {
