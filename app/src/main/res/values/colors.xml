@@ -70,7 +70,7 @@
     <!-- Dark Theme Backgrounds -->
     <color name="blue_white_night">#102726</color>
     <color name="background_color_night">#121212</color>
-    <color name="card_background_night">#1E1E1E</color>
+    <color name="card_background_night">#002F18</color>
     <color name="colorBackground_night">#121212</color>
 
     <!-- Dark Theme Text -->

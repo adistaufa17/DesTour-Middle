@@ -67,7 +67,27 @@
             <item name="android:backgroundTint">@color/gradient_middle_night</item>
             <item name="android:layout_marginTop">@dimen/_24sdp</item>
             <item name="android:textColor">@color/white</item>
+            <item name="android:paddingVertical">@dimen/_6sdp</item>
+            <item name="cornerRadius">@dimen/_10sdp</item>
+            <item name="android:textSize">@dimen/_16ssp</item>
+            <item name="android:gravity">center</item>
         </style>
+
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ImageProfile">
+        <item name="android:padding">@dimen/_4sdp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:elevation">@dimen/_4sdp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/ic_person</item>
+        <item name="shapeAppearanceOverlay">@style/CircleImageView</item>
+        <item name="strokeColor">@color/white</item>
+        <item name="strokeWidth">@dimen/_2sdp</item>
+    </style>
 
         <style name="BgWisata">
             <item name="android:background">@color/blue_white_night</item>
@@ -102,10 +122,16 @@
             <item name="android:textStyle">bold</item>
         </style>
 
+    <style name="IcLocation">
+        <item name="android:tint">@color/white</item>
+        <item name="android:layout_marginTop">@dimen/_4sdp</item>
+    </style>
+
         <style name="TvLocation">
             <item name="layout_goneMarginStart">@dimen/_8sdp</item>
             <item name="android:textColor">@color/text_secondary_night</item>
             <item name="android:textSize">@dimen/_14ssp</item>
+            <item name="drawableTint">@color/white</item>
         </style>
 
         <style name="LineDivider">
@@ -131,9 +157,10 @@
     <style name="CustomBookmarkButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_marginTop">@dimen/_24sdp</item>
         <item name="android:layout_marginEnd">@dimen/_16sdp</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
         <item name="backgroundTint">@color/btn_detail_background</item>
         <item name="strokeColor">@color/btn_detail_stroke</item>
-        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="android:textColor">@color/text_primary_night</item>
         <item name="iconTint">@color/bookmark_color</item>
         <item name="rippleColor">@color/bookmark_color</item>
     </style>
@@ -143,7 +170,7 @@
         <item name="iconTint">@color/like_color</item>
         <item name="backgroundTint">@color/btn_detail_background</item>
         <item name="strokeColor">@color/btn_detail_stroke</item>
-        <item name="android:textColor">@color/btn_detail_text</item>
+        <item name="android:textColor">@color/text_primary_night</item>
         <item name="rippleColor">@color/like_color</item>
     </style>
 
@@ -202,6 +229,34 @@
             <item name="android:textColorHint">@color/text_hint_night</item>
         </style>
 
+    <style name="ButtonSearch">
+        <item name="tint">@color/white</item>
+        <item name="android:layout_marginEnd">@dimen/_8sdp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">@dimen/_8sdp</item>
+    </style>
+
+    <style name="ButtonCloseSearch">
+        <item name="tint">@color/white</item>
+        <item name="android:src">@drawable/ic_close</item>
+    </style>
+
+    <style name="ButtonProfile">
+        <item name="android:layout_margin">@dimen/_16sdp</item>
+        <item name="backgroundTint">@color/primary_color</item>
+        <item name="tint">@color/white</item>
+        <item name="layout_anchorGravity">bottom|end</item>
+        <item name="layout_anchor">@id/rv_wisata</item>
+        <item name="android:src">@drawable/ic_person</item>
+    </style>
+
+    <style name="TvTitleProfile">
+        <item name="android:layout_margin">@dimen/_70sdp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_20sdp</item>
+    </style>
+
         <style name="CardProfile">
             <item name="android:layout_marginStart">@dimen/_16sdp</item>
             <item name="android:layout_marginTop">@dimen/_70sdp</item>
@@ -210,6 +265,22 @@
             <item name="cardCornerRadius">@dimen/_12sdp</item>
             <item name="cardElevation">@dimen/_4sdp</item>
         </style>
+
+    <style name="BgProfile">
+        <item name="android:background">@color/colorBackground_night</item>
+    </style>
+    <style name="BtnLogout">
+        <item name="android:layout_margin">@dimen/_20sdp</item>
+        <item name="android:backgroundTint">@color/colorDanger</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingVertical">@dimen/_8sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">@dimen/_8sdp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/white</item>
+    </style>
 
         <style name="TextViewNamaProfile">
             <item name="android:textColor">@color/colorPrimaryText_night</item>

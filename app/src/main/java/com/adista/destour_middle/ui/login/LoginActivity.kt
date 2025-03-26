@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.adista.destour_middle.MainActivity
 import com.adista.destour_middle.R
+import com.adista.destour_middle.data.model.AuthResponse
 import com.adista.destour_middle.databinding.ActivityLoginBinding
 import com.adista.destour_middle.ui.register.RegisterActivity
 import com.crocodic.core.api.ApiStatus
@@ -39,6 +40,19 @@ class LoginActivity : CoreActivity<ActivityLoginBinding, LoginViewModel>(R.layou
                     ApiStatus.LOADING -> loadingDialog.show()
                     ApiStatus.SUCCESS -> {
                         loadingDialog.dismiss()
+
+                        // Ambil token dari response data
+                        val authResponse = response.data as? AuthResponse
+                        if (authResponse != null) {
+                            // Simpan ke SharedPreferences
+                            val sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE)
+                            sharedPreferences.edit().apply {
+                                putBoolean("IS_LOGGED_IN", true)
+                                putString("user_token", authResponse.data?.token)
+                                apply()
+                            }
+                        }
+
                         response.message?.let { Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show() }
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()

@@ -61,10 +61,10 @@
 
                     <ImageView
                         android:id="@+id/btn_close"
+                        style="@style/ButtonCloseSearch"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:contentDescription="@string/button_close"
-                        android:src="@drawable/ic_close"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/et_search"
                         app:layout_constraintTop_toTopOf="parent"
