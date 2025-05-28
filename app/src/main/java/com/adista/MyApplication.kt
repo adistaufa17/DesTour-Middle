@@ -1,4 +1,4 @@
-package com.adista.destour_middle
+package com.adista
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

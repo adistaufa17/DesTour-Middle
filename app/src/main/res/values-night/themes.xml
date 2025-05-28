@@ -24,6 +24,12 @@
         <item name="android:textColorSecondary">@color/text_secondary_night</item>
         <item name="android:textColorHint">@color/text_hint_night</item>
 
+        <!-- ________________ PROJEK ADVANCE KELASKU ________________ -->
+
+
+
+        <!-- _________________________________________________________-->
+
         <!-- Specific UI components -->
         <item name="materialButtonStyle">@style/ButtonLoginRegister.Night</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>

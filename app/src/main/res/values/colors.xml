@@ -3,6 +3,14 @@
     <!-- Base Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparan">#00000000</color>
+    <color name="navy"> #2D336B</color>
+    <color name="greyblue">#742D336B</color>
+    <color name="blueblack">#272B5A</color>
+    <color name="grey">#8C8C8C</color>
+    <color name="hint">#9195A8</color>
+    <color name="greybluewhite">#342D336B</color>
+    <color name="whiteblur">#D9D9D9</color>
 
     <!-- Light Theme Colors -->
     <!-- Primary Palette - Teal/Turquoise spectrum -->
